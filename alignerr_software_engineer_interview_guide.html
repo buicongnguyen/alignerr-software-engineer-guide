@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Interview and assessment preparation guide for the Alignerr Software Engineer and AI Training role.">
+<title>Alignerr Software Engineer Interview Guide</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f7fb;
+    --surface: #ffffff;
+    --surface-soft: #edf3fa;
+    --text: #18212f;
+    --muted: #58677a;
+    --border: #d7e0eb;
+    --accent: #176b87;
+    --accent-strong: #0b4f6c;
+    --code-bg: #101923;
+    --code-text: #e6edf3;
+    --quote-bg: #e7f4f8;
+    --shadow: 0 18px 48px rgba(23, 44, 68, 0.1);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f151d;
+      --surface: #171f29;
+      --surface-soft: #202b37;
+      --text: #e8eef6;
+      --muted: #a8b5c4;
+      --border: #344151;
+      --accent: #67c3df;
+      --accent-strong: #8bd8ed;
+      --code-bg: #091018;
+      --code-text: #e6edf3;
+      --quote-bg: #162d36;
+      --shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background:
+      radial-gradient(circle at top left, rgba(46, 150, 180, 0.12), transparent 28rem),
+      var(--bg);
+    color: var(--text);
+    font: 16px/1.68 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  main {
+    width: min(980px, calc(100% - 32px));
+    margin: 38px auto 80px;
+    padding: clamp(24px, 5vw, 64px);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+  }
+  h1, h2, h3 { line-height: 1.22; scroll-margin-top: 24px; }
+  h1 {
+    margin: 0 0 24px;
+    color: var(--accent-strong);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    letter-spacing: -0.045em;
+  }
+  h2 {
+    margin: 56px 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--border);
+    color: var(--accent-strong);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+  h3 {
+    margin: 38px 0 12px;
+    font-size: 1.19rem;
+  }
+  p { margin: 10px 0 16px; }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  a:hover { color: var(--accent-strong); }
+  blockquote {
+    margin: 24px 0;
+    padding: 18px 22px;
+    border-left: 5px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    background: var(--quote-bg);
+    color: var(--muted);
+  }
+  blockquote p:last-child { margin-bottom: 0; }
+  hr {
+    margin: 44px 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+  ul, ol { padding-left: 1.45rem; }
+  li { margin: 6px 0; }
+  body > main > ol:first-of-type {
+    padding: 18px 18px 18px 42px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface-soft);
+    columns: 2 280px;
+    column-gap: 40px;
+  }
+  code {
+    padding: 0.14em 0.34em;
+    border-radius: 5px;
+    background: var(--surface-soft);
+    font: 0.9em/1.5 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  }
+  pre {
+    position: relative;
+    overflow-x: auto;
+    margin: 18px 0 24px;
+    padding: 20px;
+    border: 1px solid #273749;
+    border-radius: 12px;
+    background: var(--code-bg);
+    color: var(--code-text);
+    line-height: 1.55;
+    tab-size: 4;
+  }
+  pre code { padding: 0; background: transparent; color: inherit; }
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    margin: 18px 0 26px;
+    border-collapse: collapse;
+  }
+  th, td { padding: 11px 14px; border: 1px solid var(--border); text-align: left; }
+  th { background: var(--surface-soft); }
+  strong { color: var(--text); }
+  .back-to-top {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 46px;
+    height: 46px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--accent-strong);
+    box-shadow: var(--shadow);
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .back-to-top:hover { transform: translateY(-2px); }
+
+  @media (max-width: 620px) {
+    main { width: min(100% - 16px, 980px); margin-top: 8px; border-radius: 14px; }
+    .back-to-top { right: 12px; bottom: 12px; }
+  }
+
+  @media print {
+    :root { color-scheme: light; }
+    body { background: white; font-size: 10.5pt; }
+    main { width: 100%; margin: 0; padding: 0; border: 0; box-shadow: none; }
+    h2 { break-before: page; }
+    h2:first-of-type { break-before: auto; }
+    h3, pre, blockquote, table { break-inside: avoid; }
+    .back-to-top { display: none; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<main id="top">
+<h1>Alignerr Software Engineer Interview and Assessment Guide</h1>
+<blockquote>
+<p><strong>Purpose:</strong> Preparation for an Alignerr Software Engineer / AI Training role.</p>
+<p>These are representative questions inferred from Alignerr's public role description and public candidate reports. They are not leaked or guaranteed assessment questions. Current assessments are role-specific and may change.</p>
+</blockquote>
+<h2>Contents</h2>
+<ol>
+<li><a href="#1-how-to-use-this-guide">How to use this guide</a></li>
+<li><a href="#2-resume-and-project-questions">Resume and project questions</a></li>
+<li><a href="#3-c-fundamentals">C++ fundamentals</a></li>
+<li><a href="#4-stack-and-heap-memory">Stack and heap memory</a></li>
+<li><a href="#5-python-fundamentals">Python fundamentals</a></li>
+<li><a href="#6-algorithms-and-coding-problems">Algorithms and coding problems</a></li>
+<li><a href="#7-ai-generated-code-evaluation">AI-generated code evaluation</a></li>
+<li><a href="#8-edge-case-and-test-design-questions">Edge-case and test-design questions</a></li>
+<li><a href="#9-system-design-questions">System-design questions</a></li>
+<li><a href="#10-ten-minute-zara-interview-simulation">Ten-minute Zara interview simulation</a></li>
+<li><a href="#11-last-minute-checklist">Last-minute checklist</a></li>
+</ol>
+<hr />
+<h2>1. How to use this guide</h2>
+<p>For spoken questions, aim for a clear answer lasting 45–90 seconds. A useful structure is:</p>
+<ol>
+<li>State the main point first.</li>
+<li>Give one concrete example.</li>
+<li>Explain the trade-off or result.</li>
+<li>Stop instead of adding unrelated details.</li>
+</ol>
+<p>For project questions, use:</p>
+<blockquote>
+<p><strong>Problem → responsibility → design → difficult issue → validation → measurable result</strong></p>
+</blockquote>
+<p>Replace placeholders such as <code>[project]</code>, <code>[metric]</code>, and <code>[tool]</code> with facts from your own experience. Do not claim results you cannot defend in a follow-up question.</p>
+<hr />
+<h2>2. Resume and project questions</h2>
+<h3>Q1. Explain your compiler project from source input to generated output.</h3>
+<p><strong>Model answer:</strong></p>
+<p>The compiler accepts source code, tokenizes it in the lexer, and converts the token stream into an abstract syntax tree in the parser. Semantic analysis then resolves symbols, checks types, and reports invalid programs. The front end lowers valid programs into an intermediate representation. Optimization passes transform that IR while preserving program behavior, and the back end performs instruction selection, scheduling, register allocation, and code generation for the target architecture. My main responsibility was <code>[your component]</code>. I validated it with unit tests for individual passes, end-to-end programs, negative tests for invalid input, and differential tests against <code>[reference implementation]</code>.</p>
+<p><strong>What the interviewer is testing:</strong> Whether you understand the complete system and can distinguish your own contribution from the team's work.</p>
+<h3>Q2. What part of the compiler did you personally implement?</h3>
+<p><strong>Model answer:</strong></p>
+<p>I owned <code>[component]</code>. I designed <code>[data structure or interface]</code>, implemented <code>[key behavior]</code>, and added tests covering <code>[important cases]</code>. One important decision was <code>[decision]</code>; I chose it because <code>[reason]</code>, although the trade-off was <code>[cost]</code>. I worked with <code>[adjacent component]</code> through a documented interface, so I can clearly separate my implementation from the rest of the compiler.</p>
+<h3>Q3. Describe the hardest compiler bug you encountered. How did you isolate it?</h3>
+<p><strong>Model answer:</strong></p>
+<p>The failure appeared only for <code>[specific condition]</code>, so I first minimized the input until I had the smallest reproducible case. I inspected the IR after each pass and found that the program was correct before <code>[pass]</code> but incorrect afterward. The pass made an invalid assumption about <code>[aliasing/liveness/dominance/type/overflow]</code>. I added an assertion to expose the violated invariant, corrected the transformation, and added both a regression test and nearby boundary cases. This process was faster and more reliable than debugging the final machine code directly.</p>
+<h3>Q4. How did you represent the intermediate representation, and why?</h3>
+<p><strong>Model answer:</strong></p>
+<p>I would choose an IR based on the transformations it must support. For data-flow optimization, SSA form is useful because each value has one definition and def-use relationships are explicit. For control-flow analysis, I would organize instructions into basic blocks connected by a control-flow graph. I would also define verification rules—valid types, valid terminators, consistent predecessor lists, and dominance requirements—so every pass can check that it has preserved IR invariants. The cost of SSA is that control-flow merges require phi-like values and the representation eventually has to be lowered out of SSA.</p>
+<h3>Q5. Which optimizations did you implement, and how did you prove they preserved correctness?</h3>
+<p><strong>Model answer:</strong></p>
+<p>I implemented <code>[constant folding/dead-code elimination/common-subexpression elimination/etc.]</code>. The transformation was guarded by explicit preconditions. For example, constant folding must respect the source language's overflow and floating-point rules; mathematically equivalent expressions are not always semantically equivalent. I tested the pass with unit cases, randomized inputs, and differential execution before and after optimization. I also verified IR invariants after every transformation. In production I would combine tests with code review and, for critical transformations, property-based or formal verification.</p>
+<h3>Q6. How would you decide whether an operation should execute on a CPU, GPU, or NPU?</h3>
+<p><strong>Model answer:</strong></p>
+<p>I would consider operation support, tensor shape and data type, arithmetic intensity, memory bandwidth, transfer overhead, latency constraints, batch size, and device availability. An NPU may be fastest for a supported dense neural-network operator, but moving a small tensor to it can cost more than executing on the CPU. I would begin with a cost model, then benchmark representative workloads. The scheduler should also account for graph-level effects because assigning one operator to a different device may introduce extra conversions or synchronization.</p>
+<h3>Q7. Describe a performance bottleneck you found in an AI or NPU system.</h3>
+<p><strong>Model answer:</strong></p>
+<p>I first measured the pipeline rather than guessing. Profiling showed that <code>[component]</code> consumed <code>[percentage]</code> of runtime because of <code>[memory copies/poor locality/device synchronization/kernel-launch overhead/etc.]</code>. I changed <code>[implementation]</code> to <code>[optimization]</code>. I compared identical workloads before and after the change, including warm-up and repeated runs, and reported median and tail latency rather than one favorable measurement. The result was <code>[measured improvement]</code>, with the trade-off of <code>[memory/complexity/portability cost]</code>.</p>
+<h3>Q8. How did you prove that an optimization actually improved performance?</h3>
+<p><strong>Model answer:</strong></p>
+<p>I defined the target metric first—for example throughput, median latency, p99 latency, memory use, or energy. I used representative fixed workloads, controlled relevant variables, warmed caches or runtimes when appropriate, and ran enough repetitions to show variance. I compared against a recorded baseline and checked that output correctness remained unchanged. I also profiled the new version to confirm that the original bottleneck disappeared rather than merely moving elsewhere.</p>
+<h3>Q9. Why did you use C++ instead of Python, or Python instead of C++?</h3>
+<p><strong>Model answer:</strong></p>
+<p>C++ is a strong choice when predictable performance, low-level memory control, deterministic resource management, or integration with systems APIs is central. Python is a strong choice when development speed, experimentation, readability, and its library ecosystem matter more than interpreter overhead. In a mixed system, I often prefer Python for orchestration and testing and C++ for measured hotspots. The important point is to choose from actual requirements and profiling data, not the assumption that every component must use the fastest language.</p>
+<h3>Q10. Tell me about AI-generated code you would reject even if it passes common examples.</h3>
+<p><strong>Model answer:</strong></p>
+<p>I would reject code if it relies on an unjustified assumption, fails boundary cases, has unsafe behavior, or has unacceptable complexity. For example, an implementation may pass small examples but use an <code>O(n²)</code> nested scan where the input limit requires <code>O(n log n)</code> or <code>O(n)</code>. I would give a concrete counterexample, explain the root cause, state the complexity, and propose a corrected implementation. I would also check whether the explanation matches the code, because a plausible explanation does not compensate for incorrect behavior.</p>
+<h3>Q11. Describe a technical decision you would change today.</h3>
+<p><strong>Model answer:</strong></p>
+<p>In <code>[project]</code>, I chose <code>[decision]</code> because it reduced initial implementation time. As the system grew, it caused <code>[specific problem]</code>. Today I would use <code>[better design]</code> and introduce it behind <code>[interface or migration plan]</code>. The important lesson was to identify the condition under which a simple design stops scaling; I would not automatically replace every simple solution with a more complicated one.</p>
+<h3>Q12. Explain a complex technical topic to a non-specialist.</h3>
+<p><strong>Model answer:</strong></p>
+<p>An optimizing compiler is like a translator and editor. It first understands what a program means, then rewrites it into a form a processor understands. While rewriting, it may remove unnecessary work or choose faster equivalent instructions, but it must never change the program's intended result. The difficult part is proving that every shortcut remains correct for unusual inputs as well as ordinary ones.</p>
+<hr />
+<h2>3. C++ fundamentals</h2>
+<h3>Q1. What problem does RAII solve?</h3>
+<p><strong>Answer:</strong></p>
+<p>RAII binds a resource's lifetime to an object's lifetime. The constructor acquires or initializes the resource, and the destructor releases it. Because destructors run during normal scope exit and stack unwinding, RAII prevents leaks and simplifies exception safety. It applies to memory, files, locks, sockets, and other resources—not only heap allocation.</p>
+<pre><code class="language-cpp">#include &lt;fstream&gt;
+#include &lt;mutex&gt;
+
+void write_file(std::mutex&amp; mutex) {
+    std::lock_guard&lt;std::mutex&gt; lock(mutex);
+    std::ofstream file(&quot;output.txt&quot;);
+    file &lt;&lt; &quot;data\n&quot;;
+} // file closes and mutex unlocks automatically
+</code></pre>
+<h3>Q2. When must a base-class destructor be virtual?</h3>
+<p><strong>Answer:</strong></p>
+<p>If an object may be deleted through a pointer to its base class, the base destructor must be virtual. Otherwise, deleting a derived object through that pointer has undefined behavior. If polymorphic deletion is not allowed, another valid design is a protected non-virtual base destructor.</p>
+<pre><code class="language-cpp">class Base {
+public:
+    virtual ~Base() = default;
+};
+</code></pre>
+<h3>Q3. Compare <code>std::unique_ptr</code>, <code>std::shared_ptr</code>, and <code>std::weak_ptr</code>.</h3>
+<p><strong>Answer:</strong></p>
+<ul>
+<li><code>unique_ptr</code> represents exclusive ownership. It is move-only and normally has the lowest overhead.</li>
+<li><code>shared_ptr</code> represents shared ownership through reference counting. The object is destroyed when the last owning pointer is destroyed.</li>
+<li><code>weak_ptr</code> observes an object managed by <code>shared_ptr</code> without extending its lifetime. It is commonly used to break ownership cycles.</li>
+</ul>
+<p>Prefer <code>unique_ptr</code> unless the design genuinely requires shared ownership. A raw pointer or reference can express non-owning access when lifetime safety is otherwise guaranteed.</p>
+<h3>Q4. Explain copy construction versus move construction.</h3>
+<p><strong>Answer:</strong></p>
+<p>A copy constructor creates an independent object from an existing object, normally duplicating its owned state. A move constructor transfers resources from an expiring object and leaves the source valid but in an unspecified state. Moving can avoid expensive allocation and copying, but it does not guarantee zero cost. <code>std::move</code> is only a cast that permits moving; the selected move operation performs the transfer.</p>
+<h3>Q5. What are the Rule of Zero and Rule of Five?</h3>
+<p><strong>Answer:</strong></p>
+<p>The Rule of Zero says that a class should use RAII member types so it does not need to define its own destructor, copy constructor, copy assignment, move constructor, or move assignment. If a class directly manages a resource and defines one of those special operations, it often needs to consider all five—the Rule of Five. Rule of Zero is generally safer and easier to maintain.</p>
+<h3>Q6. When does <code>std::vector</code> invalidate iterators, pointers, and references?</h3>
+<p><strong>Answer:</strong></p>
+<p>An operation that reallocates the vector's storage invalidates all iterators, pointers, and references to its elements. Without reallocation, insertion or erasure generally invalidates positions at or after the modification point; <code>erase</code> also invalidates the erased elements. <code>reserve</code> can reduce reallocations, but calling <code>reserve</code> itself invalidates references if it changes capacity.</p>
+<h3>Q7. What is wrong with returning a reference to a local variable?</h3>
+<p><strong>Answer:</strong></p>
+<p>The local variable's lifetime ends when the function returns, so the returned reference dangles. Using it causes undefined behavior. Return by value, refer to an object whose lifetime outlives the call, or return an owning/smart-pointer type when dynamic lifetime is required.</p>
+<pre><code class="language-cpp">int&amp; bad() {
+    int value = 42;
+    return value; // dangling reference
+}
+
+int good() {
+    return 42;
+}
+</code></pre>
+<h3>Q8. What is object slicing?</h3>
+<p><strong>Answer:</strong></p>
+<p>Object slicing occurs when a derived object is copied into a base object by value. The derived portion is discarded, so derived state and behavior are lost. Use references or pointers for runtime polymorphism, or deliberately use value semantics with a design that does not depend on derived state.</p>
+<h3>Q9. Compare a mutex, an atomic operation, and a condition variable.</h3>
+<p><strong>Answer:</strong></p>
+<ul>
+<li>A mutex provides mutual exclusion for a critical section containing one or more related operations.</li>
+<li>An atomic provides indivisible operations on a particular value and may be suitable for counters or carefully designed lock-free algorithms.</li>
+<li>A condition variable lets threads sleep until shared state may satisfy a predicate; it is normally used with a mutex and a predicate loop.</li>
+</ul>
+<p>Atomics are not an automatic replacement for locks. Multi-variable invariants and compound operations often still need synchronization.</p>
+<h3>Q10. Give the average complexities of common containers.</h3>
+<p><strong>Answer:</strong></p>
+<table>
+<thead>
+<tr><th>Operation</th><th><code>vector</code></th><th><code>map</code></th><th><code>unordered_map</code></th></tr>
+</thead>
+<tbody>
+<tr><td>Indexed access</td><td><code>O(1)</code></td><td>N/A</td><td>N/A</td></tr>
+<tr><td>Search by key/value</td><td><code>O(n)</code></td><td><code>O(log n)</code></td><td>Average <code>O(1)</code>, worst <code>O(n)</code></td></tr>
+<tr><td>Insert at end</td><td>Amortized <code>O(1)</code></td><td>N/A</td><td>N/A</td></tr>
+<tr><td>Insert/erase by key</td><td>N/A</td><td><code>O(log n)</code></td><td>Average <code>O(1)</code>, worst <code>O(n)</code></td></tr>
+<tr><td>Insert/erase in middle</td><td><code>O(n)</code></td><td>N/A</td><td>N/A</td></tr>
+</tbody>
+</table>
+<p><code>map</code> is ordered and has predictable logarithmic operations. <code>unordered_map</code> is hash-based and offers average constant-time lookup but depends on hashing quality and load factor.</p>
+<h3>Q11. What is undefined behavior, and why is it dangerous?</h3>
+<p><strong>Answer:</strong></p>
+<p>Undefined behavior means the C++ standard imposes no requirements on what happens. Examples include signed-integer overflow, out-of-bounds access, data races, and dereferencing dangling pointers. A program may appear to work in one build and fail after optimization because the compiler is allowed to assume undefined behavior never occurs. Tests and sanitizers help detect it, but sound ownership and bounds design are the primary defense.</p>
+<h3>Q12. What is the difference between a reference and a pointer?</h3>
+<p><strong>Answer:</strong></p>
+<p>A reference is an alias that must be initialized and cannot be reseated; normal references are intended to refer to valid objects. A pointer stores an address, may be null, and may be reseated. Neither expresses ownership by itself. In interfaces, a reference often communicates required non-owning access, while a pointer can communicate optional access when null is meaningful.</p>
+<hr />
+<h2>4. Stack and heap memory</h2>
+<h3>Q1. What is the difference between stack and heap memory?</h3>
+<p><strong>Answer:</strong></p>
+<p>The <strong>stack</strong> usually stores function call frames, including return information and many local variables. Allocation and deallocation follow scope and call order, making them fast and automatic. Each thread normally has its own limited stack.</p>
+<p>The <strong>heap</strong>—more precisely, dynamic storage—supports objects whose size or lifetime is determined at runtime. Allocation is performed through an allocator, such as with <code>new</code> or <code>std::make_unique</code> in C++, and has more management overhead. Heap objects remain alive until their owning mechanism releases them.</p>
+<p>The key distinction is storage duration and lifetime management, not simply “small versus large.” Language standards do not require every local variable to occupy a physical stack; compilers may place values in registers or optimize them away.</p>
+<h3>Q2. Does a pointer live on the stack or the heap?</h3>
+<p><strong>Answer:</strong></p>
+<p>Either is possible. A local pointer variable may be stored in a stack frame while pointing to an object in dynamic storage. A pointer can also be a member of a heap-allocated object. The pointer's storage location and the pointee's storage location are independent.</p>
+<pre><code class="language-cpp">void example() {
+    auto value = std::make_unique&lt;int&gt;(42);
+    // The unique_ptr is a local object, commonly in the stack frame.
+    // The int it owns is in dynamic storage.
+}
+</code></pre>
+<h3>Q3. What causes a stack overflow?</h3>
+<p><strong>Answer:</strong></p>
+<p>A stack overflow occurs when a thread exceeds its available stack space. Typical causes are unbounded or excessively deep recursion and very large automatic local objects. Possible fixes include correcting the recursion base case, using an iterative algorithm, storing large buffers in dynamic storage, or increasing the stack only when the algorithm genuinely requires it.</p>
+<h3>Q4. What is a memory leak?</h3>
+<p><strong>Answer:</strong></p>
+<p>A memory leak occurs when dynamically allocated memory remains allocated but the program has lost the ability or responsibility to release it. Repeated leaks increase memory use and may eventually degrade or terminate the process. In C++, prefer containers and RAII smart pointers. Note that memory still reachable but retained unnecessarily can also cause practical memory-growth problems even if a leak detector does not call it unreachable.</p>
+<h3>Q5. What are a dangling pointer and a use-after-free error?</h3>
+<p><strong>Answer:</strong></p>
+<p>A dangling pointer refers to an object whose lifetime has ended. A use-after-free occurs when the program accesses that invalid object. The behavior is undefined and can cause corruption or security vulnerabilities. Ownership types, clear lifetime rules, and sanitizers reduce this risk.</p>
+<pre><code class="language-cpp">int* pointer = new int(42);
+delete pointer;
+pointer = nullptr; // prevents this variable from retaining the old address
+</code></pre>
+<p>Setting one pointer to null does not repair other aliases that still point to the destroyed object, so the real solution is sound ownership.</p>
+<h3>Q6. Is stack allocation always faster than heap allocation?</h3>
+<p><strong>Answer:</strong></p>
+<p>Stack-style allocation is usually cheaper because it often amounts to adjusting a pointer, while a general-purpose heap allocator must track blocks and synchronization. However, overall performance depends on object initialization, cache behavior, allocator implementation, escape analysis, and access patterns. The correct interview answer is “usually, but measure the complete workload.”</p>
+<h3>Q7. How does RAII relate to heap memory?</h3>
+<p><strong>Answer:</strong></p>
+<p>RAII places ownership of a dynamic resource inside an object with deterministic cleanup. For example, <code>unique_ptr</code> releases its heap object in its destructor. When the owner leaves scope, cleanup happens automatically even during exception propagation. This converts manual lifetime management into normal object lifetime management.</p>
+<h3>Q8. What happens to memory in this function?</h3>
+<pre><code class="language-cpp">int* create_value() {
+    int local = 7;
+    return &amp;local;
+}
+</code></pre>
+<p><strong>Answer:</strong></p>
+<p><code>local</code> has automatic storage duration and its lifetime ends when <code>create_value</code> returns. The returned pointer is dangling, and dereferencing it is undefined behavior. Return the integer by value:</p>
+<pre><code class="language-cpp">int create_value() {
+    return 7;
+}
+</code></pre>
+<p>If an object truly needs dynamic lifetime, return an owning type such as <code>std::unique_ptr&lt;T&gt;</code>, although dynamic allocation is unnecessary for an integer in this example.</p>
+<h3>Q9. What is fragmentation?</h3>
+<p><strong>Answer:</strong></p>
+<p>External fragmentation means free memory is divided into blocks that may be too small or poorly placed for a requested allocation. Internal fragmentation is unused space inside allocated blocks because of size classes, alignment, or metadata. Allocators use strategies such as pools, arenas, size classes, and compaction where possible to manage these costs.</p>
+<h3>Q10. In Python, are objects on the stack or heap?</h3>
+<p><strong>Answer:</strong></p>
+<p>Python language semantics should be described in terms of objects, references, and lifetimes rather than relying on a C++-style stack/heap model. In CPython, Python objects are generally dynamically allocated, while execution frames contain references to them. Assignment binds a name to an object; it does not copy the object. CPython mainly uses reference counting plus a cyclic garbage collector, but those are implementation details rather than guarantees of every Python implementation.</p>
+<hr />
+<h2>5. Python fundamentals</h2>
+<h3>Q1. What is the mutable-default-argument problem?</h3>
+<p><strong>Answer:</strong></p>
+<p>Default arguments are evaluated once when the function is defined, not on every call. A mutable default such as a list is therefore shared across calls.</p>
+<pre><code class="language-python">def append_value(value, values=None):
+    if values is None:
+        values = []
+    values.append(value)
+    return values
+</code></pre>
+<p>Using <code>None</code> as a sentinel creates a fresh list when the caller does not provide one.</p>
+<h3>Q2. How do generators differ from lists?</h3>
+<p><strong>Answer:</strong></p>
+<p>A list eagerly stores all its elements and supports repeated iteration and indexing. A generator produces values lazily, normally one at a time, which can reduce memory use and allow streaming or infinite sequences. A generator is usually consumed once and does not provide random access. Laziness may also defer exceptions until iteration.</p>
+<h3>Q3. What is a decorator, and how do you preserve metadata?</h3>
+<p><strong>Answer:</strong></p>
+<p>A decorator takes a function or class and returns a replacement, commonly adding behavior such as logging, authorization, caching, or instrumentation. <code>functools.wraps</code> copies important metadata and exposes the original wrapped function.</p>
+<pre><code class="language-python">from functools import wraps
+
+def trace(function):
+    @wraps(function)
+    def wrapper(*args, **kwargs):
+        print(f&quot;calling {function.__name__}&quot;)
+        return function(*args, **kwargs)
+    return wrapper
+</code></pre>
+<h3>Q4. What is a context manager?</h3>
+<p><strong>Answer:</strong></p>
+<p>A context manager defines setup and cleanup around a block controlled by <code>with</code>. It normally implements <code>__enter__</code> and <code>__exit__</code>, or is built with <code>contextlib.contextmanager</code>. Files, locks, transactions, and temporary resources are common examples. Cleanup runs even when the body raises an exception.</p>
+<h3>Q5. Explain late binding in Python closures.</h3>
+<p><strong>Answer:</strong></p>
+<p>Closures capture variables by reference-like binding, so the value is looked up when the inner function runs. Functions created in a loop can therefore all observe the loop variable's final value.</p>
+<pre><code class="language-python">functions = [lambda i=i: i for i in range(3)]
+</code></pre>
+<p>Here <code>i=i</code> stores the current value as a default argument for each function.</p>
+<h3>Q6. What does the GIL prevent, and what does it not prevent?</h3>
+<p><strong>Answer:</strong></p>
+<p>In standard GIL-enabled CPython builds, the Global Interpreter Lock allows only one thread at a time to execute Python bytecode within a process. It often limits CPU-bound pure-Python thread parallelism, but threads can still help with blocking I/O because the GIL may be released. The GIL does not make application-level compound operations automatically thread-safe, and native extensions may release it. Processes or native/vectorized code are common choices for CPU-bound parallelism.</p>
+<h3>Q7. When should you use threads, processes, or <code>asyncio</code>?</h3>
+<p><strong>Answer:</strong></p>
+<ul>
+<li>Use threads for blocking I/O or libraries with synchronous interfaces, while protecting shared state.</li>
+<li>Use processes for CPU-bound Python work when process overhead and serialization are acceptable.</li>
+<li>Use <code>asyncio</code> for high-concurrency I/O when the libraries are asynchronous and tasks cooperate by awaiting instead of blocking.</li>
+</ul>
+<p>The choice depends on workload, library support, failure isolation, communication cost, and operational complexity.</p>
+<h3>Q8. Compare instance methods, class methods, and static methods.</h3>
+<p><strong>Answer:</strong></p>
+<p>An instance method receives <code>self</code> and operates on a particular instance. A class method receives <code>cls</code> and is often used for alternate constructors or behavior that depends on the subclass. A static method receives neither automatically and is a namespaced utility related to the class. A module-level function may be clearer if the function does not belong conceptually to the class.</p>
+<h3>Q9. What is a metaclass, and when would you avoid it?</h3>
+<p><strong>Answer:</strong></p>
+<p>A metaclass controls class creation; a class is normally an instance of a metaclass such as <code>type</code>. Metaclasses can register subclasses, validate class definitions, or generate class-level behavior. They are powerful but can obscure control flow and complicate inheritance. Class decorators, <code>__init_subclass__</code>, descriptors, or ordinary composition are often simpler alternatives.</p>
+<h3>Q10. What happens when an awaitable passed to <code>asyncio.gather</code> fails?</h3>
+<p><strong>Answer:</strong></p>
+<p>With default arguments, the first raised exception is propagated to the task awaiting <code>gather</code>. Other submitted awaitables are not automatically guaranteed to be cancelled merely because one failed. With <code>return_exceptions=True</code>, exceptions are collected into the result list. Production code should make cancellation and cleanup behavior explicit, and modern structured-concurrency tools such as <code>TaskGroup</code> may provide more suitable failure semantics.</p>
+<h3>Q11. What is the difference between <code>is</code> and <code>==</code>?</h3>
+<p><strong>Answer:</strong></p>
+<p><code>==</code> tests value equality through an object's equality behavior. <code>is</code> tests object identity—whether two references point to the same object. Use <code>is</code> for singletons such as <code>None</code>: <code>value is None</code>. Do not rely on interning behavior to compare strings or integers with <code>is</code>.</p>
+<h3>Q12. What is the difference between shallow and deep copying?</h3>
+<p><strong>Answer:</strong></p>
+<p>A shallow copy creates a new outer container but retains references to nested objects. A deep copy recursively copies nested state where supported. Deep copying can be expensive or semantically wrong for objects such as files, locks, or shared resources, so explicit copying is often preferable for complex domain objects.</p>
+<hr />
+<h2>6. Algorithms and coding problems</h2>
+<p>The examples use Python for brevity. In an interview, first clarify input constraints and expected behavior, then explain the approach before coding.</p>
+<h3>Q1. Rotate an <code>N × N</code> matrix 90 degrees counterclockwise in place.</h3>
+<p><strong>Approach:</strong> Transpose the matrix, then reverse the order of the rows. This is a publicly reported example of an Alignerr interview question, but it is not guaranteed to recur.</p>
+<pre><code class="language-python">def rotate_counterclockwise(matrix: list[list[int]]) -&gt; None:
+    n = len(matrix)
+    if any(len(row) != n for row in matrix):
+        raise ValueError(&quot;matrix must be square&quot;)
+
+    for row in range(n):
+        for col in range(row + 1, n):
+            matrix[row][col], matrix[col][row] = (
+                matrix[col][row],
+                matrix[row][col],
+            )
+
+    matrix.reverse()
+</code></pre>
+<p><strong>Complexity:</strong> <code>O(n²)</code> time and <code>O(1)</code> auxiliary space.</p>
+<p><strong>Important tests:</strong> Empty matrix, <code>1 × 1</code>, <code>2 × 2</code>, negative values, and a non-square input if validation is required.</p>
+<h3>Q2. Find the length of the longest substring without repeated characters.</h3>
+<p><strong>Approach:</strong> Maintain a sliding window and the most recent index of each character.</p>
+<pre><code class="language-python">def longest_unique_substring(text: str) -&gt; int:
+    last_seen: dict[str, int] = {}
+    left = 0
+    best = 0
+
+    for right, character in enumerate(text):
+        if character in last_seen and last_seen[character] &gt;= left:
+            left = last_seen[character] + 1
+        last_seen[character] = right
+        best = max(best, right - left + 1)
+
+    return best
+</code></pre>
+<p><strong>Complexity:</strong> <code>O(n)</code> time and <code>O(k)</code> space, where <code>k</code> is the number of distinct characters tracked.</p>
+<h3>Q3. Merge overlapping intervals.</h3>
+<p><strong>Approach:</strong> Sort by start position, then extend or append to the result.</p>
+<pre><code class="language-python">def merge_intervals(intervals: list[list[int]]) -&gt; list[list[int]]:
+    if not intervals:
+        return []
+
+    ordered = sorted(intervals, key=lambda interval: interval[0])
+    merged = [ordered[0][:]]
+
+    for start, end in ordered[1:]:
+        if start &lt;= merged[-1][1]:
+            merged[-1][1] = max(merged[-1][1], end)
+        else:
+            merged.append([start, end])
+
+    return merged
+</code></pre>
+<p><strong>Complexity:</strong> <code>O(n log n)</code> time for sorting and <code>O(n)</code> output space.</p>
+<p><strong>Clarify:</strong> Whether touching intervals such as <code>[1, 2]</code> and <code>[2, 3]</code> count as overlapping.</p>
+<h3>Q4. Return the <code>k</code> most frequent values.</h3>
+<p><strong>Approach:</strong> Count values and retain the largest <code>k</code> frequency entries with a heap.</p>
+<pre><code class="language-python">from collections import Counter
+import heapq
+
+def top_k_frequent(values: list[int], k: int) -&gt; list[int]:
+    if k &lt; 0:
+        raise ValueError(&quot;k must be non-negative&quot;)
+    counts = Counter(values)
+    if k &gt; len(counts):
+        raise ValueError(&quot;k exceeds the number of distinct values&quot;)
+    return [value for value, _ in heapq.nlargest(
+        k,
+        counts.items(),
+        key=lambda item: item[1],
+    )]
+</code></pre>
+<p><strong>Complexity:</strong> <code>O(n + m log k)</code> time and <code>O(m)</code> space, where <code>m</code> is the number of distinct values.</p>
+<h3>Q5. Explain a heap data structure and implement the <code>k</code>th-largest element.</h3>
+<p><strong>Answer:</strong></p>
+<p>A binary heap is a complete binary tree usually stored in an array. In a min-heap, every parent is no greater than its children, so the minimum is available in <code>O(1)</code>. Insertion and removal of the root take <code>O(log n)</code>. A heap is not fully sorted; it guarantees only the parent-child ordering needed for priority-queue operations.</p>
+<p>Maintain a min-heap containing the largest <code>k</code> values seen. Its root is the <code>k</code>th largest.</p>
+<pre><code class="language-python">import heapq
+
+def kth_largest(values: list[int], k: int) -&gt; int:
+    if not 1 &lt;= k &lt;= len(values):
+        raise ValueError(&quot;k is out of range&quot;)
+
+    heap: list[int] = []
+    for value in values:
+        if len(heap) &lt; k:
+            heapq.heappush(heap, value)
+        elif value &gt; heap[0]:
+            heapq.heapreplace(heap, value)
+    return heap[0]
+</code></pre>
+<p><strong>Complexity:</strong> <code>O(n log k)</code> time and <code>O(k)</code> space.</p>
+<p><strong>Common follow-up:</strong> A heap data structure is unrelated to the general-purpose heap-memory region despite sharing the word “heap.”</p>
+<h3>Q6. Detect a cycle in a directed graph.</h3>
+<p><strong>Approach:</strong> Use three DFS states: unvisited, visiting, and visited. Reaching a visiting node reveals a back edge.</p>
+<pre><code class="language-python">def has_directed_cycle(graph: dict[int, list[int]]) -&gt; bool:
+    state: dict[int, int] = {}  # 0=unvisited, 1=visiting, 2=visited
+
+    def visit(node: int) -&gt; bool:
+        if state.get(node, 0) == 1:
+            return True
+        if state.get(node, 0) == 2:
+            return False
+
+        state[node] = 1
+        for neighbor in graph.get(node, []):
+            if visit(neighbor):
+                return True
+        state[node] = 2
+        return False
+
+    nodes = set(graph)
+    nodes.update(neighbor for values in graph.values() for neighbor in values)
+    return any(visit(node) for node in nodes if state.get(node, 0) == 0)
+</code></pre>
+<p><strong>Complexity:</strong> <code>O(V + E)</code> time and <code>O(V)</code> space.</p>
+<h3>Q7. Find the shortest path through an unweighted grid.</h3>
+<p><strong>Approach:</strong> BFS explores states in increasing distance order.</p>
+<pre><code class="language-python">from collections import deque
+
+def shortest_grid_path(
+    grid: list[list[int]],
+    start: tuple[int, int],
+    goal: tuple[int, int],
+) -&gt; int:
+    if not grid or not grid[0]:
+        return -1
+
+    rows, cols = len(grid), len(grid[0])
+    if any(len(row) != cols for row in grid):
+        raise ValueError(&quot;grid must be rectangular&quot;)
+
+    def open_cell(row: int, col: int) -&gt; bool:
+        return 0 &lt;= row &lt; rows and 0 &lt;= col &lt; cols and grid[row][col] == 0
+
+    if not open_cell(*start) or not open_cell(*goal):
+        return -1
+
+    queue = deque([(start[0], start[1], 0)])
+    visited = {start}
+
+    while queue:
+        row, col, distance = queue.popleft()
+        if (row, col) == goal:
+            return distance
+
+        for row_delta, col_delta in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            next_cell = (row + row_delta, col + col_delta)
+            if next_cell not in visited and open_cell(*next_cell):
+                visited.add(next_cell)
+                queue.append((*next_cell, distance + 1))
+
+    return -1
+</code></pre>
+<p><strong>Complexity:</strong> <code>O(rows × columns)</code> time and space.</p>
+<h3>Q8. Implement an LRU cache.</h3>
+<p><strong>Approach:</strong> A hash map provides lookup, and a doubly linked ordering provides <code>O(1)</code> movement and eviction. Python's <code>OrderedDict</code> already combines these behaviors.</p>
+<pre><code class="language-python">from collections import OrderedDict
+from typing import Generic, TypeVar
+
+K = TypeVar(&quot;K&quot;)
+V = TypeVar(&quot;V&quot;)
+
+class LRUCache(Generic[K, V]):
+    def __init__(self, capacity: int) -&gt; None:
+        if capacity &lt;= 0:
+            raise ValueError(&quot;capacity must be positive&quot;)
+        self.capacity = capacity
+        self.data: OrderedDict[K, V] = OrderedDict()
+
+    def get(self, key: K) -&gt; V | None:
+        if key not in self.data:
+            return None
+        self.data.move_to_end(key)
+        return self.data[key]
+
+    def put(self, key: K, value: V) -&gt; None:
+        if key in self.data:
+            self.data.move_to_end(key)
+        self.data[key] = value
+        if len(self.data) &gt; self.capacity:
+            self.data.popitem(last=False)
+</code></pre>
+<p><strong>Complexity:</strong> Average <code>O(1)</code> for <code>get</code> and <code>put</code>; <code>O(capacity)</code> space.</p>
+<p><strong>Clarify:</strong> Returning <code>None</code> cannot distinguish a missing key from a cached <code>None</code>; a sentinel or exception may be preferable.</p>
+<h3>Q9. Find a boundary with binary search.</h3>
+<p><strong>Problem:</strong> Return the first index for which a monotonic predicate is true, or <code>len(values)</code> if it is never true.</p>
+<pre><code class="language-python">from collections.abc import Callable, Sequence
+from typing import TypeVar
+
+T = TypeVar(&quot;T&quot;)
+
+def first_true(values: Sequence[T], predicate: Callable[[T], bool]) -&gt; int:
+    left, right = 0, len(values)
+
+    while left &lt; right:
+        middle = left + (right - left) // 2
+        if predicate(values[middle]):
+            right = middle
+        else:
+            left = middle + 1
+
+    return left
+</code></pre>
+<p><strong>Complexity:</strong> <code>O(log n)</code> predicate evaluations and <code>O(1)</code> extra space.</p>
+<p><strong>Important invariant:</strong> All indices before <code>left</code> are known false, and all indices at or after <code>right</code> are known true.</p>
+<h3>Q10. Return a valid task order or report a dependency cycle.</h3>
+<p><strong>Approach:</strong> Use Kahn's topological-sort algorithm with indegrees.</p>
+<pre><code class="language-python">from collections import deque
+
+def task_order(task_count: int, dependencies: list[tuple[int, int]]) -&gt; list[int]:
+    # (prerequisite, dependent)
+    graph = [[] for _ in range(task_count)]
+    indegree = [0] * task_count
+
+    for prerequisite, dependent in dependencies:
+        graph[prerequisite].append(dependent)
+        indegree[dependent] += 1
+
+    queue = deque(index for index, degree in enumerate(indegree) if degree == 0)
+    order: list[int] = []
+
+    while queue:
+        node = queue.popleft()
+        order.append(node)
+        for neighbor in graph[node]:
+            indegree[neighbor] -= 1
+            if indegree[neighbor] == 0:
+                queue.append(neighbor)
+
+    return order if len(order) == task_count else []
+</code></pre>
+<p><strong>Complexity:</strong> <code>O(V + E)</code> time and space.</p>
+<h3>Q11. When should you use a stack, a queue, or a heap?</h3>
+<p><strong>Answer:</strong></p>
+<ul>
+<li>A stack is LIFO and fits nested structure, undo operations, expression evaluation, and DFS.</li>
+<li>A queue is FIFO and fits arrival-order processing and BFS.</li>
+<li>A heap is a priority queue and fits repeatedly retrieving the smallest or largest priority, scheduling, top-<code>k</code> problems, and algorithms such as Dijkstra's.</li>
+</ul>
+<p>Their names describe access behavior, not where their elements physically reside in memory.</p>
+<h3>Q12. Compare DFS and BFS.</h3>
+<p><strong>Answer:</strong></p>
+<p>Both visit a graph in <code>O(V + E)</code> time when implemented with adjacency lists. BFS uses a queue and finds shortest paths by edge count in an unweighted graph. DFS uses recursion or an explicit stack and is useful for cycle detection, topological reasoning, and exhaustive path exploration. Their peak memory depends on graph shape: BFS can store a wide frontier, while recursive DFS can overflow the call stack on a very deep graph.</p>
+<hr />
+<h2>7. AI-generated code evaluation</h2>
+<h3>Q1. How would you compare two AI-generated solutions?</h3>
+<p><strong>Answer:</strong></p>
+<p>I would evaluate them in this order:</p>
+<ol>
+<li><strong>Requirement compliance:</strong> Do they solve the requested problem without inventing assumptions?</li>
+<li><strong>Correctness:</strong> Can I prove the algorithm, and can I find a counterexample?</li>
+<li><strong>Edge cases:</strong> Empty input, boundaries, duplicates, invalid data, overflow, concurrency, and scale.</li>
+<li><strong>Complexity:</strong> Does time and memory usage fit the constraints?</li>
+<li><strong>Safety:</strong> Resource lifetime, injection, unsafe deserialization, races, and error handling.</li>
+<li><strong>Maintainability:</strong> Clear names, appropriate abstraction, minimal duplication, and tests.</li>
+<li><strong>Explanation quality:</strong> Does the explanation accurately describe the submitted code?</li>
+</ol>
+<p>I would rank correctness above style. A readable wrong answer is still wrong, while an initially correct but opaque answer may be fixable through refactoring.</p>
+<h3>Q2. Critique these two implementations of duplicate detection.</h3>
+<pre><code class="language-python">def solution_a(values):
+    for i in range(len(values)):
+        for j in range(i + 1, len(values)):
+            if values[i] == values[j]:
+                return True
+    return False
+
+def solution_b(values):
+    return len(values) != len(set(values))
+</code></pre>
+<p><strong>Answer:</strong></p>
+<p>Both are correct for finite inputs whose elements support equality; <code>solution_b</code> additionally requires hashable elements. <code>solution_a</code> uses <code>O(n²)</code> comparisons and <code>O(1)</code> auxiliary space. <code>solution_b</code> normally uses <code>O(n)</code> time and <code>O(n)</code> space, so it is preferable for a large list of hashable values. However, <code>solution_a</code> is applicable to unhashable values such as lists, while <code>solution_b</code> raises <code>TypeError</code>. The correct ranking therefore depends on the input contract rather than syntax alone.</p>
+<h3>Q3. Find the bug in this binary search.</h3>
+<pre><code class="language-python">def contains(values, target):
+    left, right = 0, len(values) - 1
+    while left &lt; right:
+        middle = (left + right) // 2
+        if values[middle] &lt; target:
+            left = middle + 1
+        else:
+            right = middle - 1
+    return values[left] == target
+</code></pre>
+<p><strong>Answer:</strong></p>
+<p>There are two bugs. First, an empty list causes an invalid access to <code>values[0]</code>. Second, setting <code>right = middle - 1</code> discards <code>middle</code> even when it could contain the target; combined with <code>left &lt; right</code>, the invariants are inconsistent. A corrected closed-interval search is:</p>
+<pre><code class="language-python">def contains(values, target):
+    left, right = 0, len(values) - 1
+    while left &lt;= right:
+        middle = left + (right - left) // 2
+        if values[middle] == target:
+            return True
+        if values[middle] &lt; target:
+            left = middle + 1
+        else:
+            right = middle - 1
+    return False
+</code></pre>
+<h3>Q4. What security problems do AI coding assistants commonly miss?</h3>
+<p><strong>Answer:</strong></p>
+<p>Common failures include SQL or command injection, missing authorization checks, path traversal, unsafe deserialization, hard-coded secrets, weak randomness, permissive CORS, server-side request forgery, insecure temporary files, and leaking sensitive data through logs. I would not merely name a vulnerability; I would identify the trust boundary, provide an attack input, assess impact, and propose a framework-appropriate fix plus a regression test.</p>
+<h3>Q5. How do you write useful feedback on an incorrect answer?</h3>
+<p><strong>Answer:</strong></p>
+<p>I state the verdict, identify the exact faulty assumption, provide the smallest counterexample, explain expected versus actual behavior, and suggest the necessary correction. For example: “The answer is incorrect because it assumes all values are positive. For <code>[-5, -2]</code>, it returns <code>0</code>, although the maximum is <code>-2</code>. Initialize the running result from the first element or negative infinity, and add an all-negative regression test.” This is more actionable than saying only “edge cases are missing.”</p>
+<h3>Q6. How would you design a prompt that stress-tests a coding model?</h3>
+<p><strong>Answer:</strong></p>
+<p>I would specify an unambiguous task with constraints that expose likely failure modes. For example, request an LRU cache that supports a cached <code>None</code>, has fixed capacity, is safe under concurrent reads and writes, and must provide average <code>O(1)</code> operations. I would include observable acceptance criteria but avoid revealing the implementation. Hidden tests would cover eviction order, updates, zero or invalid capacity, concurrency, and the distinction between missing and cached values.</p>
+<hr />
+<h2>8. Edge-case and test-design questions</h2>
+<h3>Q1. What cases would you test for a binary search?</h3>
+<p><strong>Answer:</strong></p>
+<ul>
+<li>Empty input</li>
+<li>One element, both present and absent</li>
+<li>Target at the first and last positions</li>
+<li>Target below the minimum and above the maximum</li>
+<li>Even and odd lengths</li>
+<li>Duplicate values, with a clarified requirement for any/first/last occurrence</li>
+<li>Very large input</li>
+<li>Invalid or unsorted input if validation is part of the contract</li>
+</ul>
+<p>I would also verify termination and index bounds, because many binary-search bugs come from mixing closed and half-open intervals.</p>
+<h3>Q2. What cases would you test for matrix rotation?</h3>
+<p><strong>Answer:</strong></p>
+<p>Test an empty matrix if permitted, <code>1 × 1</code>, <code>2 × 2</code>, odd and even dimensions, repeated and negative values, and the expected result after four rotations. If the function promises in-place behavior, verify object identity and ensure it does not allocate another <code>N × N</code> matrix. Decide explicitly whether non-square or ragged input should be rejected.</p>
+<h3>Q3. How would you test an LRU cache?</h3>
+<p><strong>Answer:</strong></p>
+<p>Test insertion and retrieval, eviction at capacity, refreshing recency on <code>get</code>, refreshing or replacing on <code>put</code>, repeated updates to one key, capacity one, missing keys, and cached null-like values. If concurrency is required, test simultaneous access and use a race detector where available. Also verify that memory use remains bounded by capacity.</p>
+<h3>Q4. How would you test an API endpoint generated by an AI?</h3>
+<p><strong>Answer:</strong></p>
+<p>I would test valid requests, required and optional fields, type and size boundaries, malformed input, authentication, authorization between users, duplicate/idempotent requests, rate limits, timeouts, dependency failures, and safe error messages. I would also check injection, logging of secrets, transaction rollback, concurrency, pagination, and whether the documented response schema matches the implementation.</p>
+<h3>Q5. What is property-based testing?</h3>
+<p><strong>Answer:</strong></p>
+<p>Property-based testing generates many inputs and verifies general invariants instead of checking only hand-selected examples. For sorting, useful properties include that the output is ordered, is a permutation of the input, and sorting twice produces the same result. It complements example-based tests and is especially effective for parsers, serializers, numeric code, and compiler transformations.</p>
+<h3>Q6. What is differential testing?</h3>
+<p><strong>Answer:</strong></p>
+<p>Differential testing runs the same inputs through two implementations and compares their observable behavior. A compiler can compare optimized and unoptimized execution, or compare its output with a trusted reference compiler within the common language subset. Differences reveal bugs, although the reference may also be wrong, and undefined or implementation-specific behavior must be excluded or normalized.</p>
+<hr />
+<h2>9. System-design questions</h2>
+<h3>Q1. Design a service that evaluates AI-generated code safely.</h3>
+<p><strong>Model answer:</strong></p>
+<p>I would separate the control plane from isolated execution workers. The API authenticates the caller, validates a submission, stores metadata, and publishes a job to a durable queue. A worker launches an ephemeral sandbox with a read-only base image, strict CPU, memory, process, filesystem, and wall-clock limits, no network by default, and a low-privilege identity. Tests and static checks run inside the sandbox, and structured results are stored before the job is acknowledged.</p>
+<p>For scale, workers can autoscale from queue depth. Job identifiers make retries idempotent, and leases recover jobs from failed workers. I would record image and test-suite versions for reproducibility, keep untrusted output separate from service logs, limit output size, scan supplied artifacts, and destroy the sandbox after each run. Metrics would include queue latency, execution latency, timeout rate, infrastructure failures, and result consistency.</p>
+<h3>Q2. How would you design a distributed task queue?</h3>
+<p><strong>Model answer:</strong></p>
+<p>I would first clarify delivery semantics and workload. A practical design uses a durable broker, worker leases or visibility timeouts, idempotent handlers, bounded retries with exponential backoff, and a dead-letter queue. Jobs carry an immutable identifier and versioned payload. Workers acknowledge only after durable result storage. Monitoring covers queue age, retries, failures, processing latency, and poison jobs. Exactly-once execution is rarely realistic end to end, so I would design for at-least-once delivery and idempotent effects.</p>
+<h3>Q3. How would you prevent duplicate work after a worker crashes?</h3>
+<p><strong>Answer:</strong></p>
+<p>The broker can re-deliver a job after its lease expires, so duplicate execution is possible. I would use a stable job ID and make result commits idempotent, often with a uniqueness constraint or compare-and-set state transition. External side effects require their own idempotency keys. Acknowledging only after the result commits prevents silent loss, while idempotency makes retries safe.</p>
+<h3>Q4. REST or GraphQL: how would you choose?</h3>
+<p><strong>Answer:</strong></p>
+<p>REST is simple, cache-friendly, and maps naturally to resource-oriented endpoints. GraphQL gives clients flexible selection and a typed schema, which can reduce over-fetching across complex related data. Its costs include resolver performance, authorization complexity, query-cost controls, and caching. I would choose based on client diversity and access patterns, not fashion; either can be designed well or poorly.</p>
+<h3>Q5. What metrics would you monitor in an AI-code evaluation platform?</h3>
+<p><strong>Answer:</strong></p>
+<p>I would monitor availability, request and queue latency, queue age, worker utilization, execution time, timeout and out-of-memory rates, infrastructure versus candidate-code failures, retry counts, sandbox startup time, and storage errors. For evaluation quality, I would track flaky-test rate, evaluator agreement, benchmark version, unexpected score drift, and reproducibility. Metrics need dimensions such as language and runtime version without including sensitive source code.</p>
+<hr />
+<h2>10. Ten-minute Zara interview simulation</h2>
+<p>These model answers are templates. Personalize them and keep every claim defensible.</p>
+<h3>Q1. Introduce yourself and summarize your strongest software-engineering expertise.</h3>
+<p><strong>Model answer:</strong></p>
+<p>I am a software engineer focused on C++, Python, algorithms, and performance-sensitive systems. My strongest experience is in compiler development and AI/NPU-related tooling, where correctness and efficiency both matter. I have worked on <code>[specific component]</code>, solved <code>[specific problem]</code>, and validated the result using <code>[tests/benchmarks]</code>. I am particularly comfortable reading unfamiliar code, finding subtle defects, and explaining why a solution is correct or incorrect, which directly matches AI-code evaluation work.</p>
+<h3>Q2. Tell me about your compiler or NPU project and your exact contribution.</h3>
+<p><strong>Model answer:</strong></p>
+<p>The project addressed <code>[problem]</code>. I was responsible for <code>[specific owned component]</code>, not the entire system. I designed <code>[interface/data structure]</code> and implemented <code>[behavior]</code>. The hardest issue was <code>[technical difficulty]</code>; I diagnosed it using <code>[method]</code> and fixed it by <code>[solution]</code>. I verified correctness with <code>[tests]</code> and measured <code>[metric]</code>, which changed from <code>[before]</code> to <code>[after]</code>.</p>
+<h3>Q3. What was the most difficult technical problem in that project?</h3>
+<p><strong>Model answer:</strong></p>
+<p>The most difficult problem was <code>[problem]</code> because it appeared only under <code>[condition]</code>. I reduced it to a minimal reproducible example and instrumented <code>[relevant layer]</code>. That showed the real cause was <code>[root cause]</code>, rather than the component where the final failure appeared. I corrected <code>[invariant or implementation]</code>, added a regression test, and checked adjacent cases. The main lesson was to debug at the earliest layer where the state becomes incorrect.</p>
+<h3>Q4. Explain one C++ or Python concept essential to your solution.</h3>
+<p><strong>Model answer:</strong></p>
+<p>RAII was essential because the component owned resources across multiple error paths. I represented each resource with an object whose destructor released it, so normal returns and exceptions used the same cleanup mechanism. That removed manual cleanup duplication and prevented leaks. The broader principle is that ownership should be explicit in types rather than remembered informally by callers.</p>
+<h3>Q5. How did you test correctness and evaluate performance?</h3>
+<p><strong>Model answer:</strong></p>
+<p>For correctness, I used unit tests for individual transformations, integration tests for the complete pipeline, negative tests, and regression cases for every discovered bug. Where possible, I used differential or property-based testing. For performance, I chose a representative workload, recorded a baseline, controlled warm-up and configuration, ran repeated measurements, and reported median and tail results. I also confirmed that the optimized output remained correct.</p>
+<h3>Q6. How would you evaluate code generated by an AI model?</h3>
+<p><strong>Model answer:</strong></p>
+<p>I would first restate the contract and constraints. Then I would inspect the algorithm, attempt to prove it, and actively search for a small counterexample. I would test boundaries, analyze time and space complexity, check resource and security behavior, and verify that the explanation matches the code. My feedback would name the exact defect, demonstrate it with an input, and propose a correction rather than giving only a general rating.</p>
+<h3>Q7. What edge cases do coding models commonly miss?</h3>
+<p><strong>Model answer:</strong></p>
+<p>Common misses include empty and singleton inputs, duplicates, negative values, overflow, malformed input, Unicode, aliasing and mutation, unavailable dependencies, timeouts, concurrency races, and inputs large enough to expose poor complexity. The relevant cases depend on the contract, so I derive them from boundaries, equivalence classes, and implementation assumptions instead of applying one fixed checklist blindly.</p>
+<h3>Q8. Why are you interested in this role?</h3>
+<p><strong>Model answer:</strong></p>
+<p>The role combines three things I already value: solving technical problems, reviewing code critically, and communicating the reasoning behind a judgment. My compiler and systems background trained me to look for invariants, performance costs, and unusual boundary conditions. I am interested in applying that discipline to improve the correctness and reliability of AI-generated software.</p>
+<h3>Q9. Tell me about a time you received technical criticism.</h3>
+<p><strong>Model answer:</strong></p>
+<p>During <code>[project]</code>, a reviewer pointed out that my design assumed <code>[assumption]</code>, which would fail under <code>[condition]</code>. I reproduced the concern, agreed it was valid, and revised the design to <code>[change]</code>. I added a test that would have caught the original problem and documented the invariant. The feedback improved both the component and my review checklist; I now surface assumptions explicitly before implementation.</p>
+<h3>Q10. Why should an evaluator explain a verdict instead of only assigning a score?</h3>
+<p><strong>Model answer:</strong></p>
+<p>A score says which response appears better, but it does not reveal the failure mode or provide a useful training signal. A good explanation ties the verdict to a requirement, shows concrete evidence such as a counterexample, and distinguishes a fatal correctness issue from a minor style concern. This also improves consistency between evaluators and makes disputed judgments auditable.</p>
+<hr />
+<h2>11. Last-minute checklist</h2>
+<p>Before beginning the interview or assessment:</p>
+<ul>
+<li>Review every language, framework, and project named on your résumé.</li>
+<li>Prepare a 60-second introduction and two 90-second project stories.</li>
+<li>Quantify results only when you can explain how they were measured.</li>
+<li>Review arrays, hash maps, stacks, queues, heaps, graphs, BFS/DFS, binary search, and basic dynamic programming.</li>
+<li>Review C++ ownership, RAII, move semantics, virtual destructors, iterator invalidation, and undefined behavior.</li>
+<li>Review Python generators, decorators, context managers, closures, concurrency, and mutable defaults.</li>
+<li>Practise distinguishing the heap data structure from heap/dynamic memory.</li>
+<li>For every coding answer, state correctness, complexity, and edge cases.</li>
+<li>For every critique, give a concrete counterexample.</li>
+<li>Speak concisely: answer the question first, then provide supporting detail.</li>
+</ul>
+<h2>Public references</h2>
+<ul>
+<li><a href="https://www.alignerr.com/process">Alignerr application process</a></li>
+<li><a href="https://www.alignerr.com/jobs/b0a0d4b1-9510-4e22-8c9f-96e12663a94f">Alignerr Software Engineer (AI Training) role</a></li>
+<li><a href="https://www.alignerr.com/jobs/6a214113-5128-4ebb-a746-39dd0224ecb2">Alignerr Senior Software Engineer — AI Evaluation and Benchmarks role</a></li>
+<li><a href="https://www.glassdoor.com/Interview/I-have-given-a-2d-array-I-need-to-rotate-2d-array-couter-clockwise-in-place-The-last-column-become-the-first-row-The-seco-QTN_7877396.htm">Publicly reported matrix-rotation interview question</a></li>
+</ul>
+</main>
+<button class="back-to-top" type="button" aria-label="Back to top" title="Back to top">↑</button>
+<script>
+  (() => {
+    const slugify = (text) => text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/[\s-]+/g, "-");
+
+    document.querySelectorAll("h2, h3").forEach((heading) => {
+      if (!heading.id) heading.id = slugify(heading.textContent);
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const targetId = link.getAttribute("href").slice(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          event.preventDefault();
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+          history.replaceState(null, "", link.getAttribute("href"));
+        }
+      });
+    });
+
+    document.querySelector(".back-to-top").addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  })();
+</script>
+</body>
+</html>
