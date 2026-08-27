@@ -17,6 +17,7 @@
 9. [System-design questions](#9-system-design-questions)
 10. [Ten-minute Zara interview simulation](#10-ten-minute-zara-interview-simulation)
 11. [Last-minute checklist](#11-last-minute-checklist)
+12. [Tailored questions for your compiler, NPU, AI, and EDA background](#12-tailored-questions-for-your-compiler-npu-ai-and-eda-background)
 
 ---
 
@@ -1005,6 +1006,107 @@ Before beginning the interview or assessment:
 - For every coding answer, state correctness, complexity, and edge cases.
 - For every critique, give a concrete counterexample.
 - Speak concisely: answer the question first, then provide supporting detail.
+
+---
+
+## 12. Tailored questions for your compiler, NPU, AI, and EDA background
+
+This final section is tailored to the background described in this conversation: C++, Python, algorithms, compiler development, NPU/AI systems, and EDA. Replace bracketed fields with facts from your résumé. Do not invent a metric or claim that you cannot explain under follow-up questioning.
+
+### Q1. Give me a 60-second introduction connecting your compiler, NPU, and AI experience to this role.
+
+**Model answer:**
+
+I am a software engineer specializing in C++, Python, algorithms, and performance-sensitive AI systems. In `[compiler or NPU project]`, I owned `[specific component]` and worked across `[compiler/runtime/hardware boundary]` to solve `[specific problem]`. I used `[tests, profiling, or differential validation]` to verify correctness and improved `[latency/throughput/memory/compiler quality]` by `[defensible result]`. That background is relevant to Alignerr because I am accustomed to reading unfamiliar code, finding incorrect assumptions and boundary cases, comparing alternative implementations, and explaining technical judgments clearly.
+
+### Q2. Choose one compiler project and trace a single operation from source or model graph to generated execution.
+
+**Model answer:**
+
+I would use `[representative operation]`. It enters the system as `[source AST, framework operator, or graph node]`, is validated and normalized by `[front-end component]`, and is lowered into `[IR name or form]`. Optimization passes apply `[specific transformations]` under `[important invariants]`. The back end then performs `[instruction selection, scheduling, memory planning, register allocation, or code emission]` for `[target]`. At runtime, `[runtime component]` loads the result and coordinates `[buffers, kernels, synchronization, or device execution]`. My personal contribution was `[precise scope]`, and I validated it with `[unit, integration, differential, or hardware tests]`.
+
+### Q3. What compiler invariant would you check first when an AI-generated optimization pass produces incorrect output?
+
+**Model answer:**
+
+I would first identify the earliest pass after which observable state becomes incorrect. Then I would check the invariants relevant to that pass: type and shape consistency, dominance and def-use validity, aliasing assumptions, side-effect ordering, liveness, numerical semantics, and control-flow integrity. I would minimize the failing program, compare IR immediately before and after the pass, and disable or isolate transformations until one rewrite remains. The feedback to the AI should name the violated invariant and provide the minimized counterexample rather than merely saying the optimized output is wrong.
+
+### Q4. How should an NPU compiler handle an unsupported operator?
+
+**Model answer:**
+
+The compiler should detect support during capability analysis, not fail unpredictably during execution. Depending on system requirements, it can reject the model with a precise diagnostic, lower the operation into supported primitives, or partition the graph and fall back to CPU or GPU execution. A fallback decision must include tensor-layout conversion, data-transfer cost, synchronization, numerical compatibility, and graph-level performance. I would test unsupported data types, dynamic shapes, boundary tensor sizes, and chains of supported and unsupported operators.
+
+### Q5. Explain how tiling and memory planning affect NPU performance.
+
+**Model answer:**
+
+NPUs often have fast but limited on-chip memory, so large tensors must be divided into tiles. The tile shape affects data reuse, DMA traffic, alignment, parallel utilization, and the amount of partial state that must be retained. A theoretically efficient kernel can still be slow if it repeatedly transfers the same data or creates synchronization gaps. I would use hardware constraints and a cost model to select candidate tiles, then profile representative shapes and check peak memory, transfer volume, compute utilization, and tail latency.
+
+### Q6. How would you validate an INT8 or mixed-precision optimization?
+
+**Model answer:**
+
+I would validate both numerical quality and system performance. First I would define acceptable error metrics for the model or operator, use representative calibration and evaluation data, and compare against a higher-precision reference. I would inspect sensitive layers, saturation, rounding, scale and zero-point handling, accumulator width, and boundary values. Then I would benchmark latency, throughput, memory, and conversion overhead. The optimization is acceptable only if the measured performance gain is meaningful and the accuracy change remains inside the agreed threshold.
+
+### Q7. A model is correct on the CPU reference but wrong on the NPU. How do you debug it?
+
+**Model answer:**
+
+I would reproduce the issue deterministically and compare intermediate tensors at partition or operator boundaries. A binary-search strategy across graph stages can identify the first divergence. I would then check layout and stride conversions, quantization parameters, broadcasting, padding, shape inference, unsupported corner cases, synchronization, buffer lifetime, and numerical tolerance. I would reduce the graph to the smallest failing subgraph, fix the responsible layer, and add a regression test that runs against both the reference and NPU paths.
+
+### Q8. How does your EDA experience strengthen your software-engineering judgment?
+
+**Model answer:**
+
+EDA work combines large graphs, strict correctness requirements, difficult optimization objectives, and expensive real-world validation. In `[EDA project]`, I used `[graph/search/optimization/data-structure technique]` to address `[placement, routing, timing, verification, simulation, or another problem]`. The important engineering lesson was `[trade-off or invariant]`. That experience transfers to AI-code evaluation because it trained me to distinguish a plausible heuristic from a correct algorithm, reason about scale, and demand evidence for performance and correctness claims.
+
+### Q9. Describe a C++ ownership or lifetime bug you found in a systems project.
+
+**Model answer:**
+
+In `[project]`, `[symptom]` was caused by `[dangling reference, invalidated iterator, double ownership, race, or resource leak]`. I reproduced it with `[minimal test or sanitizer]`, traced the resource lifetime, and found that ownership was ambiguous between `[components]`. I fixed it by expressing ownership with `[value semantics, unique_ptr, shared ownership only if necessary, or an RAII wrapper]` and made non-owning access explicit. I added a regression test and used `[AddressSanitizer, ThreadSanitizer, Valgrind, or another tool]` to verify the fix.
+
+### Q10. Where did Python fit into your compiler, AI, or EDA workflow?
+
+**Model answer:**
+
+I used Python for `[model conversion, orchestration, test generation, log analysis, benchmarking, or data validation]`, while `[C++ or another language]` handled `[performance-critical component]`. Python made iteration and integration faster, but I kept boundaries explicit through `[API, binding, subprocess, file format, or RPC]`. I added schema and type checks at the boundary and measured serialization or transfer overhead rather than assuming it was negligible.
+
+### Q11. Describe a performance optimization you measured across software and hardware layers.
+
+**Model answer:**
+
+The initial symptom was `[latency, throughput, utilization, or memory problem]`. Profiling showed the bottleneck was `[specific component]`, not `[initial suspicion]`. I changed `[implementation or schedule]` to `[optimization]` and benchmarked identical representative workloads with warm-up and repeated runs. I reported `[median/p95/p99/throughput/memory]`, verified output correctness, and checked that the bottleneck did not simply move to another stage. The measured result was `[defensible number]`, with the trade-off of `[complexity, memory, portability, or compilation time]`.
+
+### Q12. Two AI-generated implementations both pass the provided tests. How would your background help you rank them?
+
+**Model answer:**
+
+I would not treat the provided tests as proof. I would identify each implementation's invariants and assumptions, derive boundary and adversarial cases, analyze time and memory complexity, and inspect numerical, ownership, concurrency, and hardware-specific behavior. For compiler or NPU code, I would pay particular attention to shapes, layouts, aliasing, side effects, precision, synchronization, and unsupported operations. I would rank the solutions using concrete evidence and explain any conditional verdict—for example, one may be faster only when inputs satisfy an unstated constraint.
+
+### Q13. What is the strongest technical claim on your résumé, and how would you prove it?
+
+**Model answer:**
+
+My strongest claim is `[claim]`. I can support it by explaining the baseline, workload, environment, measurement method, and my exact contribution. The result changed from `[before]` to `[after]` on `[representative workload]`, while `[correctness or quality measure]` remained within `[threshold]`. I would also disclose limitations such as `[hardware, dataset, model size, or scenario]`, because a narrowly true measured claim is stronger than a broad claim I cannot reproduce.
+
+### Q14. What follow-up questions should you expect after describing a project?
+
+**Answer:**
+
+Expect the interviewer to ask:
+
+- What exactly did you implement yourself?
+- Why did you choose that design instead of the main alternative?
+- What invariant made the solution correct?
+- What input or environment caused it to fail?
+- How did you measure the result?
+- Which test would have caught the bug earlier?
+- What trade-off did the change introduce?
+- What would you redesign today?
+
+Prepare one concrete, defensible answer for each of these questions for every major project listed on your résumé.
 
 ## Public references
 
