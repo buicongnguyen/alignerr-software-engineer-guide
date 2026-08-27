@@ -1347,8 +1347,8 @@ def solution_b(values):
       group.append(tabList);
 
       [
-        ["python", "Python", pythonPre],
         ["cpp", "C++", cppPre],
+        ["python", "Python", pythonPre],
       ].forEach(([language, label, codeBlock]) => {
         const tabId = `code-tab-${groupIndex}-${language}`;
         const panelId = `code-panel-${groupIndex}-${language}`;
@@ -1412,9 +1412,9 @@ def solution_b(values):
       });
     });
 
-    let preferredCodeLanguage = "python";
-    try { preferredCodeLanguage = localStorage.getItem("preferred-code-language") || "python"; } catch {}
-    setCodeLanguage(preferredCodeLanguage === "cpp" ? "cpp" : "python", false);
+    let preferredCodeLanguage = "cpp";
+    try { preferredCodeLanguage = localStorage.getItem("preferred-code-language") || "cpp"; } catch {}
+    setCodeLanguage(preferredCodeLanguage === "python" ? "python" : "cpp", false);
 
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
       link.addEventListener("click", (event) => {
