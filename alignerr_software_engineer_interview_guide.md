@@ -445,11 +445,13 @@ A shallow copy creates a new outer container but retains references to nested ob
 
 ## 6. Algorithms and coding problems
 
-The examples use Python for brevity. In an interview, first clarify input constraints and expected behavior, then explain the approach before coding.
+Each coding exercise includes equivalent Python and C++ implementations. In an interview, first clarify input constraints and expected behavior, then explain the approach before coding.
 
 ### Q1. Rotate an `N × N` matrix 90 degrees counterclockwise in place.
 
 **Approach:** Transpose the matrix, then reverse the order of the rows. This is a publicly reported example of an Alignerr interview question, but it is not guaranteed to recur.
+
+**Python**
 
 ```python
 def rotate_counterclockwise(matrix: list[list[int]]) -> None:
@@ -467,6 +469,31 @@ def rotate_counterclockwise(matrix: list[list[int]]) -> None:
     matrix.reverse()
 ```
 
+**C++**
+
+```cpp
+#include <algorithm>
+#include <stdexcept>
+#include <vector>
+
+void rotateCounterclockwise(std::vector<std::vector<int>>& matrix) {
+    const std::size_t n = matrix.size();
+    for (const auto& row : matrix) {
+        if (row.size() != n) {
+            throw std::invalid_argument("matrix must be square");
+        }
+    }
+
+    for (std::size_t row = 0; row < n; ++row) {
+        for (std::size_t col = row + 1; col < n; ++col) {
+            std::swap(matrix[row][col], matrix[col][row]);
+        }
+    }
+
+    std::reverse(matrix.begin(), matrix.end());
+}
+```
+
 **Complexity:** `O(n²)` time and `O(1)` auxiliary space.
 
 **Important tests:** Empty matrix, `1 × 1`, `2 × 2`, negative values, and a non-square input if validation is required.
@@ -474,6 +501,8 @@ def rotate_counterclockwise(matrix: list[list[int]]) -> None:
 ### Q2. Find the length of the longest substring without repeated characters.
 
 **Approach:** Maintain a sliding window and the most recent index of each character.
+
+**Python**
 
 ```python
 def longest_unique_substring(text: str) -> int:
@@ -490,11 +519,40 @@ def longest_unique_substring(text: str) -> int:
     return best
 ```
 
+**C++**
+
+```cpp
+#include <algorithm>
+#include <cstddef>
+#include <string>
+#include <unordered_map>
+
+std::size_t longestUniqueSubstring(const std::string& text) {
+    std::unordered_map<char, std::size_t> lastSeen;
+    std::size_t left = 0;
+    std::size_t best = 0;
+
+    for (std::size_t right = 0; right < text.size(); ++right) {
+        const char character = text[right];
+        if (const auto found = lastSeen.find(character);
+            found != lastSeen.end() && found->second >= left) {
+            left = found->second + 1;
+        }
+        lastSeen[character] = right;
+        best = std::max(best, right - left + 1);
+    }
+
+    return best;
+}
+```
+
 **Complexity:** `O(n)` time and `O(k)` space, where `k` is the number of distinct characters tracked.
 
 ### Q3. Merge overlapping intervals.
 
 **Approach:** Sort by start position, then extend or append to the result.
+
+**Python**
 
 ```python
 def merge_intervals(intervals: list[list[int]]) -> list[list[int]]:
@@ -513,6 +571,36 @@ def merge_intervals(intervals: list[list[int]]) -> list[list[int]]:
     return merged
 ```
 
+**C++**
+
+```cpp
+#include <algorithm>
+#include <array>
+#include <vector>
+
+std::vector<std::array<int, 2>> mergeIntervals(
+    std::vector<std::array<int, 2>> intervals
+) {
+    if (intervals.empty()) {
+        return {};
+    }
+
+    std::sort(intervals.begin(), intervals.end());
+    std::vector<std::array<int, 2>> merged{intervals.front()};
+
+    for (std::size_t index = 1; index < intervals.size(); ++index) {
+        const auto [start, end] = intervals[index];
+        if (start <= merged.back()[1]) {
+            merged.back()[1] = std::max(merged.back()[1], end);
+        } else {
+            merged.push_back(intervals[index]);
+        }
+    }
+
+    return merged;
+}
+```
+
 **Complexity:** `O(n log n)` time for sorting and `O(n)` output space.
 
 **Clarify:** Whether touching intervals such as `[1, 2]` and `[2, 3]` count as overlapping.
@@ -520,6 +608,8 @@ def merge_intervals(intervals: list[list[int]]) -> list[list[int]]:
 ### Q4. Return the `k` most frequent values.
 
 **Approach:** Count values and retain the largest `k` frequency entries with a heap.
+
+**Python**
 
 ```python
 from collections import Counter
@@ -538,6 +628,48 @@ def top_k_frequent(values: list[int], k: int) -> list[int]:
     )]
 ```
 
+**C++**
+
+```cpp
+#include <functional>
+#include <queue>
+#include <stdexcept>
+#include <unordered_map>
+#include <utility>
+#include <vector>
+
+std::vector<int> topKFrequent(const std::vector<int>& values, int k) {
+    if (k < 0) {
+        throw std::invalid_argument("k must be non-negative");
+    }
+
+    std::unordered_map<int, int> counts;
+    for (const int value : values) {
+        ++counts[value];
+    }
+    if (static_cast<std::size_t>(k) > counts.size()) {
+        throw std::invalid_argument("k exceeds the number of distinct values");
+    }
+
+    using Entry = std::pair<int, int>;  // (frequency, value)
+    std::priority_queue<Entry, std::vector<Entry>, std::greater<>> heap;
+    for (const auto& [value, frequency] : counts) {
+        heap.emplace(frequency, value);
+        if (heap.size() > static_cast<std::size_t>(k)) {
+            heap.pop();
+        }
+    }
+
+    std::vector<int> result;
+    result.reserve(k);
+    while (!heap.empty()) {
+        result.push_back(heap.top().second);
+        heap.pop();
+    }
+    return result;
+}
+```
+
 **Complexity:** `O(n + m log k)` time and `O(m)` space, where `m` is the number of distinct values.
 
 ### Q5. Explain a heap data structure and implement the `k`th-largest element.
@@ -547,6 +679,8 @@ def top_k_frequent(values: list[int], k: int) -> list[int]:
 A binary heap is a complete binary tree usually stored in an array. In a min-heap, every parent is no greater than its children, so the minimum is available in `O(1)`. Insertion and removal of the root take `O(log n)`. A heap is not fully sorted; it guarantees only the parent-child ordering needed for priority-queue operations.
 
 Maintain a min-heap containing the largest `k` values seen. Its root is the `k`th largest.
+
+**Python**
 
 ```python
 import heapq
@@ -564,6 +698,32 @@ def kth_largest(values: list[int], k: int) -> int:
     return heap[0]
 ```
 
+**C++**
+
+```cpp
+#include <functional>
+#include <queue>
+#include <stdexcept>
+#include <vector>
+
+int kthLargest(const std::vector<int>& values, std::size_t k) {
+    if (k == 0 || k > values.size()) {
+        throw std::invalid_argument("k is out of range");
+    }
+
+    std::priority_queue<int, std::vector<int>, std::greater<>> heap;
+    for (const int value : values) {
+        if (heap.size() < k) {
+            heap.push(value);
+        } else if (value > heap.top()) {
+            heap.pop();
+            heap.push(value);
+        }
+    }
+    return heap.top();
+}
+```
+
 **Complexity:** `O(n log k)` time and `O(k)` space.
 
 **Common follow-up:** A heap data structure is unrelated to the general-purpose heap-memory region despite sharing the word “heap.”
@@ -571,6 +731,8 @@ def kth_largest(values: list[int], k: int) -> int:
 ### Q6. Detect a cycle in a directed graph.
 
 **Approach:** Use three DFS states: unvisited, visiting, and visited. Reaching a visiting node reveals a back edge.
+
+**Python**
 
 ```python
 def has_directed_cycle(graph: dict[int, list[int]]) -> bool:
@@ -594,11 +756,58 @@ def has_directed_cycle(graph: dict[int, list[int]]) -> bool:
     return any(visit(node) for node in nodes if state.get(node, 0) == 0)
 ```
 
+**C++**
+
+```cpp
+#include <functional>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+
+bool hasDirectedCycle(const std::unordered_map<int, std::vector<int>>& graph) {
+    std::unordered_map<int, int> state;  // 0=unvisited, 1=visiting, 2=visited
+    std::unordered_set<int> nodes;
+    for (const auto& [node, neighbors] : graph) {
+        nodes.insert(node);
+        nodes.insert(neighbors.begin(), neighbors.end());
+    }
+
+    std::function<bool(int)> visit = [&](const int node) {
+        if (state[node] == 1) {
+            return true;
+        }
+        if (state[node] == 2) {
+            return false;
+        }
+
+        state[node] = 1;
+        if (const auto found = graph.find(node); found != graph.end()) {
+            for (const int neighbor : found->second) {
+                if (visit(neighbor)) {
+                    return true;
+                }
+            }
+        }
+        state[node] = 2;
+        return false;
+    };
+
+    for (const int node : nodes) {
+        if (state[node] == 0 && visit(node)) {
+            return true;
+        }
+    }
+    return false;
+}
+```
+
 **Complexity:** `O(V + E)` time and `O(V)` space.
 
 ### Q7. Find the shortest path through an unweighted grid.
 
 **Approach:** BFS explores states in increasing distance order.
+
+**Python**
 
 ```python
 from collections import deque
@@ -638,11 +847,75 @@ def shortest_grid_path(
     return -1
 ```
 
+**C++**
+
+```cpp
+#include <array>
+#include <queue>
+#include <stdexcept>
+#include <tuple>
+#include <utility>
+#include <vector>
+
+int shortestGridPath(
+    const std::vector<std::vector<int>>& grid,
+    std::pair<int, int> start,
+    std::pair<int, int> goal
+) {
+    if (grid.empty() || grid.front().empty()) {
+        return -1;
+    }
+
+    const int rows = static_cast<int>(grid.size());
+    const int cols = static_cast<int>(grid.front().size());
+    for (const auto& row : grid) {
+        if (static_cast<int>(row.size()) != cols) {
+            throw std::invalid_argument("grid must be rectangular");
+        }
+    }
+
+    const auto openCell = [&](const int row, const int col) {
+        return row >= 0 && row < rows && col >= 0 && col < cols && grid[row][col] == 0;
+    };
+    if (!openCell(start.first, start.second) || !openCell(goal.first, goal.second)) {
+        return -1;
+    }
+
+    std::queue<std::tuple<int, int, int>> queue;
+    std::vector visited(rows, std::vector<bool>(cols, false));
+    queue.emplace(start.first, start.second, 0);
+    visited[start.first][start.second] = true;
+    constexpr std::array directions{
+        std::pair{1, 0}, std::pair{-1, 0}, std::pair{0, 1}, std::pair{0, -1}
+    };
+
+    while (!queue.empty()) {
+        const auto [row, col, distance] = queue.front();
+        queue.pop();
+        if (std::pair{row, col} == goal) {
+            return distance;
+        }
+
+        for (const auto [rowDelta, colDelta] : directions) {
+            const int nextRow = row + rowDelta;
+            const int nextCol = col + colDelta;
+            if (openCell(nextRow, nextCol) && !visited[nextRow][nextCol]) {
+                visited[nextRow][nextCol] = true;
+                queue.emplace(nextRow, nextCol, distance + 1);
+            }
+        }
+    }
+    return -1;
+}
+```
+
 **Complexity:** `O(rows × columns)` time and space.
 
 ### Q8. Implement an LRU cache.
 
 **Approach:** A hash map provides lookup, and a doubly linked ordering provides `O(1)` movement and eviction. Python's `OrderedDict` already combines these behaviors.
+
+**Python**
 
 ```python
 from collections import OrderedDict
@@ -672,6 +945,57 @@ class LRUCache(Generic[K, V]):
             self.data.popitem(last=False)
 ```
 
+**C++**
+
+```cpp
+#include <cstddef>
+#include <list>
+#include <optional>
+#include <stdexcept>
+#include <unordered_map>
+#include <utility>
+
+template <typename Key, typename Value>
+class LRUCache {
+public:
+    explicit LRUCache(std::size_t capacity) : capacity_(capacity) {
+        if (capacity_ == 0) {
+            throw std::invalid_argument("capacity must be positive");
+        }
+    }
+
+    std::optional<Value> get(const Key& key) {
+        const auto found = index_.find(key);
+        if (found == index_.end()) {
+            return std::nullopt;
+        }
+        entries_.splice(entries_.begin(), entries_, found->second);
+        return found->second->second;
+    }
+
+    void put(Key key, Value value) {
+        if (const auto found = index_.find(key); found != index_.end()) {
+            found->second->second = std::move(value);
+            entries_.splice(entries_.begin(), entries_, found->second);
+            return;
+        }
+
+        entries_.emplace_front(std::move(key), std::move(value));
+        index_[entries_.front().first] = entries_.begin();
+        if (entries_.size() > capacity_) {
+            index_.erase(entries_.back().first);
+            entries_.pop_back();
+        }
+    }
+
+private:
+    using EntryList = std::list<std::pair<Key, Value>>;
+    std::size_t capacity_;
+    EntryList entries_;
+    std::unordered_map<Key, typename EntryList::iterator> index_;
+};
+```
+
 **Complexity:** Average `O(1)` for `get` and `put`; `O(capacity)` space.
 
 **Clarify:** Returning `None` cannot distinguish a missing key from a cached `None`; a sentinel or exception may be preferable.
@@ -679,6 +1003,8 @@ class LRUCache(Generic[K, V]):
 ### Q9. Find a boundary with binary search.
 
 **Problem:** Return the first index for which a monotonic predicate is true, or `len(values)` if it is never true.
+
+**Python**
 
 ```python
 from collections.abc import Callable, Sequence
@@ -699,6 +1025,28 @@ def first_true(values: Sequence[T], predicate: Callable[[T], bool]) -> int:
     return left
 ```
 
+**C++**
+
+```cpp
+#include <cstddef>
+
+template <typename Sequence, typename Predicate>
+std::size_t firstTrue(const Sequence& values, Predicate predicate) {
+    std::size_t left = 0;
+    std::size_t right = values.size();
+
+    while (left < right) {
+        const std::size_t middle = left + (right - left) / 2;
+        if (predicate(values[middle])) {
+            right = middle;
+        } else {
+            left = middle + 1;
+        }
+    }
+    return left;
+}
+```
+
 **Complexity:** `O(log n)` predicate evaluations and `O(1)` extra space.
 
 **Important invariant:** All indices before `left` are known false, and all indices at or after `right` are known true.
@@ -706,6 +1054,8 @@ def first_true(values: Sequence[T], predicate: Callable[[T], bool]) -> int:
 ### Q10. Return a valid task order or report a dependency cycle.
 
 **Approach:** Use Kahn's topological-sort algorithm with indegrees.
+
+**Python**
 
 ```python
 from collections import deque
@@ -731,6 +1081,58 @@ def task_order(task_count: int, dependencies: list[tuple[int, int]]) -> list[int
                 queue.append(neighbor)
 
     return order if len(order) == task_count else []
+```
+
+**C++**
+
+```cpp
+#include <queue>
+#include <stdexcept>
+#include <utility>
+#include <vector>
+
+std::vector<int> taskOrder(
+    int taskCount,
+    const std::vector<std::pair<int, int>>& dependencies
+) {
+    if (taskCount < 0) {
+        throw std::invalid_argument("task count must be non-negative");
+    }
+
+    std::vector<std::vector<int>> graph(taskCount);
+    std::vector<int> indegree(taskCount, 0);
+    for (const auto [prerequisite, dependent] : dependencies) {
+        if (prerequisite < 0 || prerequisite >= taskCount ||
+            dependent < 0 || dependent >= taskCount) {
+            throw std::out_of_range("dependency contains an invalid task");
+        }
+        graph[prerequisite].push_back(dependent);
+        ++indegree[dependent];
+    }
+
+    std::queue<int> queue;
+    for (int task = 0; task < taskCount; ++task) {
+        if (indegree[task] == 0) {
+            queue.push(task);
+        }
+    }
+
+    std::vector<int> order;
+    while (!queue.empty()) {
+        const int node = queue.front();
+        queue.pop();
+        order.push_back(node);
+        for (const int neighbor : graph[node]) {
+            if (--indegree[neighbor] == 0) {
+                queue.push(neighbor);
+            }
+        }
+    }
+
+    return order.size() == static_cast<std::size_t>(taskCount)
+        ? order
+        : std::vector<int>{};
+}
 ```
 
 **Complexity:** `O(V + E)` time and space.

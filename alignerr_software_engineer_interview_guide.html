@@ -122,6 +122,45 @@
     tab-size: 4;
   }
   pre code { padding: 0; background: transparent; color: inherit; }
+  .code-tabs {
+    overflow: hidden;
+    margin: 18px 0 26px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--code-bg);
+  }
+  .code-tab-list {
+    display: flex;
+    gap: 4px;
+    padding: 7px 8px 0;
+    border-bottom: 1px solid #304052;
+    background: color-mix(in srgb, var(--code-bg) 88%, white);
+  }
+  .code-tab-button {
+    position: relative;
+    padding: 9px 16px 10px;
+    border: 0;
+    border-radius: 8px 8px 0 0;
+    background: transparent;
+    color: #9fb0c3;
+    font: 700 0.82rem/1 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+  }
+  .code-tab-button:hover { color: #e6edf3; background: rgba(255, 255, 255, 0.06); }
+  .code-tab-button[aria-selected="true"] { color: #68d7ee; background: rgba(58, 185, 214, 0.1); }
+  .code-tab-button[aria-selected="true"]::after {
+    position: absolute;
+    right: 10px;
+    bottom: -1px;
+    left: 10px;
+    height: 2px;
+    background: #43c7df;
+    content: "";
+  }
+  .code-tab-button:focus-visible { outline: 2px solid #68d7ee; outline-offset: -2px; }
+  .code-panel[hidden] { display: none; }
+  .code-panel pre { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
   table {
     display: block;
     width: 100%;
@@ -442,9 +481,10 @@ def trace(function):
 <p>A shallow copy creates a new outer container but retains references to nested objects. A deep copy recursively copies nested state where supported. Deep copying can be expensive or semantically wrong for objects such as files, locks, or shared resources, so explicit copying is often preferable for complex domain objects.</p>
 <hr />
 <h2>6. Algorithms and coding problems</h2>
-<p>The examples use Python for brevity. In an interview, first clarify input constraints and expected behavior, then explain the approach before coding.</p>
+<p>Each coding exercise includes equivalent Python and C++ implementations. In an interview, first clarify input constraints and expected behavior, then explain the approach before coding.</p>
 <h3>Q1. Rotate an <code>N × N</code> matrix 90 degrees counterclockwise in place.</h3>
 <p><strong>Approach:</strong> Transpose the matrix, then reverse the order of the rows. This is a publicly reported example of an Alignerr interview question, but it is not guaranteed to recur.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">def rotate_counterclockwise(matrix: list[list[int]]) -&gt; None:
     n = len(matrix)
     if any(len(row) != n for row in matrix):
@@ -459,10 +499,33 @@ def trace(function):
 
     matrix.reverse()
 </code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;stdexcept&gt;
+#include &lt;vector&gt;
+
+void rotateCounterclockwise(std::vector&lt;std::vector&lt;int&gt;&gt;&amp; matrix) {
+    const std::size_t n = matrix.size();
+    for (const auto&amp; row : matrix) {
+        if (row.size() != n) {
+            throw std::invalid_argument(&quot;matrix must be square&quot;);
+        }
+    }
+
+    for (std::size_t row = 0; row &lt; n; ++row) {
+        for (std::size_t col = row + 1; col &lt; n; ++col) {
+            std::swap(matrix[row][col], matrix[col][row]);
+        }
+    }
+
+    std::reverse(matrix.begin(), matrix.end());
+}
+</code></pre>
 <p><strong>Complexity:</strong> <code>O(n²)</code> time and <code>O(1)</code> auxiliary space.</p>
 <p><strong>Important tests:</strong> Empty matrix, <code>1 × 1</code>, <code>2 × 2</code>, negative values, and a non-square input if validation is required.</p>
 <h3>Q2. Find the length of the longest substring without repeated characters.</h3>
 <p><strong>Approach:</strong> Maintain a sliding window and the most recent index of each character.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">def longest_unique_substring(text: str) -&gt; int:
     last_seen: dict[str, int] = {}
     left = 0
@@ -476,9 +539,34 @@ def trace(function):
 
     return best
 </code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;cstddef&gt;
+#include &lt;string&gt;
+#include &lt;unordered_map&gt;
+
+std::size_t longestUniqueSubstring(const std::string&amp; text) {
+    std::unordered_map&lt;char, std::size_t&gt; lastSeen;
+    std::size_t left = 0;
+    std::size_t best = 0;
+
+    for (std::size_t right = 0; right &lt; text.size(); ++right) {
+        const char character = text[right];
+        if (const auto found = lastSeen.find(character);
+            found != lastSeen.end() &amp;&amp; found-&gt;second &gt;= left) {
+            left = found-&gt;second + 1;
+        }
+        lastSeen[character] = right;
+        best = std::max(best, right - left + 1);
+    }
+
+    return best;
+}
+</code></pre>
 <p><strong>Complexity:</strong> <code>O(n)</code> time and <code>O(k)</code> space, where <code>k</code> is the number of distinct characters tracked.</p>
 <h3>Q3. Merge overlapping intervals.</h3>
 <p><strong>Approach:</strong> Sort by start position, then extend or append to the result.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">def merge_intervals(intervals: list[list[int]]) -&gt; list[list[int]]:
     if not intervals:
         return []
@@ -494,10 +582,38 @@ def trace(function):
 
     return merged
 </code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;algorithm&gt;
+#include &lt;array&gt;
+#include &lt;vector&gt;
+
+std::vector&lt;std::array&lt;int, 2&gt;&gt; mergeIntervals(
+    std::vector&lt;std::array&lt;int, 2&gt;&gt; intervals
+) {
+    if (intervals.empty()) {
+        return {};
+    }
+
+    std::sort(intervals.begin(), intervals.end());
+    std::vector&lt;std::array&lt;int, 2&gt;&gt; merged{intervals.front()};
+
+    for (std::size_t index = 1; index &lt; intervals.size(); ++index) {
+        const auto [start, end] = intervals[index];
+        if (start &lt;= merged.back()[1]) {
+            merged.back()[1] = std::max(merged.back()[1], end);
+        } else {
+            merged.push_back(intervals[index]);
+        }
+    }
+
+    return merged;
+}
+</code></pre>
 <p><strong>Complexity:</strong> <code>O(n log n)</code> time for sorting and <code>O(n)</code> output space.</p>
 <p><strong>Clarify:</strong> Whether touching intervals such as <code>[1, 2]</code> and <code>[2, 3]</code> count as overlapping.</p>
 <h3>Q4. Return the <code>k</code> most frequent values.</h3>
 <p><strong>Approach:</strong> Count values and retain the largest <code>k</code> frequency entries with a heap.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">from collections import Counter
 import heapq
 
@@ -513,11 +629,51 @@ def top_k_frequent(values: list[int], k: int) -&gt; list[int]:
         key=lambda item: item[1],
     )]
 </code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;functional&gt;
+#include &lt;queue&gt;
+#include &lt;stdexcept&gt;
+#include &lt;unordered_map&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+
+std::vector&lt;int&gt; topKFrequent(const std::vector&lt;int&gt;&amp; values, int k) {
+    if (k &lt; 0) {
+        throw std::invalid_argument(&quot;k must be non-negative&quot;);
+    }
+
+    std::unordered_map&lt;int, int&gt; counts;
+    for (const int value : values) {
+        ++counts[value];
+    }
+    if (static_cast&lt;std::size_t&gt;(k) &gt; counts.size()) {
+        throw std::invalid_argument(&quot;k exceeds the number of distinct values&quot;);
+    }
+
+    using Entry = std::pair&lt;int, int&gt;;  // (frequency, value)
+    std::priority_queue&lt;Entry, std::vector&lt;Entry&gt;, std::greater&lt;&gt;&gt; heap;
+    for (const auto&amp; [value, frequency] : counts) {
+        heap.emplace(frequency, value);
+        if (heap.size() &gt; static_cast&lt;std::size_t&gt;(k)) {
+            heap.pop();
+        }
+    }
+
+    std::vector&lt;int&gt; result;
+    result.reserve(k);
+    while (!heap.empty()) {
+        result.push_back(heap.top().second);
+        heap.pop();
+    }
+    return result;
+}
+</code></pre>
 <p><strong>Complexity:</strong> <code>O(n + m log k)</code> time and <code>O(m)</code> space, where <code>m</code> is the number of distinct values.</p>
 <h3>Q5. Explain a heap data structure and implement the <code>k</code>th-largest element.</h3>
 <p><strong>Answer:</strong></p>
 <p>A binary heap is a complete binary tree usually stored in an array. In a min-heap, every parent is no greater than its children, so the minimum is available in <code>O(1)</code>. Insertion and removal of the root take <code>O(log n)</code>. A heap is not fully sorted; it guarantees only the parent-child ordering needed for priority-queue operations.</p>
 <p>Maintain a min-heap containing the largest <code>k</code> values seen. Its root is the <code>k</code>th largest.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">import heapq
 
 def kth_largest(values: list[int], k: int) -&gt; int:
@@ -532,10 +688,34 @@ def kth_largest(values: list[int], k: int) -&gt; int:
             heapq.heapreplace(heap, value)
     return heap[0]
 </code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;functional&gt;
+#include &lt;queue&gt;
+#include &lt;stdexcept&gt;
+#include &lt;vector&gt;
+
+int kthLargest(const std::vector&lt;int&gt;&amp; values, std::size_t k) {
+    if (k == 0 || k &gt; values.size()) {
+        throw std::invalid_argument(&quot;k is out of range&quot;);
+    }
+
+    std::priority_queue&lt;int, std::vector&lt;int&gt;, std::greater&lt;&gt;&gt; heap;
+    for (const int value : values) {
+        if (heap.size() &lt; k) {
+            heap.push(value);
+        } else if (value &gt; heap.top()) {
+            heap.pop();
+            heap.push(value);
+        }
+    }
+    return heap.top();
+}
+</code></pre>
 <p><strong>Complexity:</strong> <code>O(n log k)</code> time and <code>O(k)</code> space.</p>
 <p><strong>Common follow-up:</strong> A heap data structure is unrelated to the general-purpose heap-memory region despite sharing the word “heap.”</p>
 <h3>Q6. Detect a cycle in a directed graph.</h3>
 <p><strong>Approach:</strong> Use three DFS states: unvisited, visiting, and visited. Reaching a visiting node reveals a back edge.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">def has_directed_cycle(graph: dict[int, list[int]]) -&gt; bool:
     state: dict[int, int] = {}  # 0=unvisited, 1=visiting, 2=visited
 
@@ -556,9 +736,52 @@ def kth_largest(values: list[int], k: int) -&gt; int:
     nodes.update(neighbor for values in graph.values() for neighbor in values)
     return any(visit(node) for node in nodes if state.get(node, 0) == 0)
 </code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;functional&gt;
+#include &lt;unordered_map&gt;
+#include &lt;unordered_set&gt;
+#include &lt;vector&gt;
+
+bool hasDirectedCycle(const std::unordered_map&lt;int, std::vector&lt;int&gt;&gt;&amp; graph) {
+    std::unordered_map&lt;int, int&gt; state;  // 0=unvisited, 1=visiting, 2=visited
+    std::unordered_set&lt;int&gt; nodes;
+    for (const auto&amp; [node, neighbors] : graph) {
+        nodes.insert(node);
+        nodes.insert(neighbors.begin(), neighbors.end());
+    }
+
+    std::function&lt;bool(int)&gt; visit = [&amp;](const int node) {
+        if (state[node] == 1) {
+            return true;
+        }
+        if (state[node] == 2) {
+            return false;
+        }
+
+        state[node] = 1;
+        if (const auto found = graph.find(node); found != graph.end()) {
+            for (const int neighbor : found-&gt;second) {
+                if (visit(neighbor)) {
+                    return true;
+                }
+            }
+        }
+        state[node] = 2;
+        return false;
+    };
+
+    for (const int node : nodes) {
+        if (state[node] == 0 &amp;&amp; visit(node)) {
+            return true;
+        }
+    }
+    return false;
+}
+</code></pre>
 <p><strong>Complexity:</strong> <code>O(V + E)</code> time and <code>O(V)</code> space.</p>
 <h3>Q7. Find the shortest path through an unweighted grid.</h3>
 <p><strong>Approach:</strong> BFS explores states in increasing distance order.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">from collections import deque
 
 def shortest_grid_path(
@@ -595,9 +818,69 @@ def shortest_grid_path(
 
     return -1
 </code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;array&gt;
+#include &lt;queue&gt;
+#include &lt;stdexcept&gt;
+#include &lt;tuple&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+
+int shortestGridPath(
+    const std::vector&lt;std::vector&lt;int&gt;&gt;&amp; grid,
+    std::pair&lt;int, int&gt; start,
+    std::pair&lt;int, int&gt; goal
+) {
+    if (grid.empty() || grid.front().empty()) {
+        return -1;
+    }
+
+    const int rows = static_cast&lt;int&gt;(grid.size());
+    const int cols = static_cast&lt;int&gt;(grid.front().size());
+    for (const auto&amp; row : grid) {
+        if (static_cast&lt;int&gt;(row.size()) != cols) {
+            throw std::invalid_argument(&quot;grid must be rectangular&quot;);
+        }
+    }
+
+    const auto openCell = [&amp;](const int row, const int col) {
+        return row &gt;= 0 &amp;&amp; row &lt; rows &amp;&amp; col &gt;= 0 &amp;&amp; col &lt; cols &amp;&amp; grid[row][col] == 0;
+    };
+    if (!openCell(start.first, start.second) || !openCell(goal.first, goal.second)) {
+        return -1;
+    }
+
+    std::queue&lt;std::tuple&lt;int, int, int&gt;&gt; queue;
+    std::vector visited(rows, std::vector&lt;bool&gt;(cols, false));
+    queue.emplace(start.first, start.second, 0);
+    visited[start.first][start.second] = true;
+    constexpr std::array directions{
+        std::pair{1, 0}, std::pair{-1, 0}, std::pair{0, 1}, std::pair{0, -1}
+    };
+
+    while (!queue.empty()) {
+        const auto [row, col, distance] = queue.front();
+        queue.pop();
+        if (std::pair{row, col} == goal) {
+            return distance;
+        }
+
+        for (const auto [rowDelta, colDelta] : directions) {
+            const int nextRow = row + rowDelta;
+            const int nextCol = col + colDelta;
+            if (openCell(nextRow, nextCol) &amp;&amp; !visited[nextRow][nextCol]) {
+                visited[nextRow][nextCol] = true;
+                queue.emplace(nextRow, nextCol, distance + 1);
+            }
+        }
+    }
+    return -1;
+}
+</code></pre>
 <p><strong>Complexity:</strong> <code>O(rows × columns)</code> time and space.</p>
 <h3>Q8. Implement an LRU cache.</h3>
 <p><strong>Approach:</strong> A hash map provides lookup, and a doubly linked ordering provides <code>O(1)</code> movement and eviction. Python's <code>OrderedDict</code> already combines these behaviors.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">from collections import OrderedDict
 from typing import Generic, TypeVar
 
@@ -624,10 +907,59 @@ class LRUCache(Generic[K, V]):
         if len(self.data) &gt; self.capacity:
             self.data.popitem(last=False)
 </code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;cstddef&gt;
+#include &lt;list&gt;
+#include &lt;optional&gt;
+#include &lt;stdexcept&gt;
+#include &lt;unordered_map&gt;
+#include &lt;utility&gt;
+
+template &lt;typename Key, typename Value&gt;
+class LRUCache {
+public:
+    explicit LRUCache(std::size_t capacity) : capacity_(capacity) {
+        if (capacity_ == 0) {
+            throw std::invalid_argument(&quot;capacity must be positive&quot;);
+        }
+    }
+
+    std::optional&lt;Value&gt; get(const Key&amp; key) {
+        const auto found = index_.find(key);
+        if (found == index_.end()) {
+            return std::nullopt;
+        }
+        entries_.splice(entries_.begin(), entries_, found-&gt;second);
+        return found-&gt;second-&gt;second;
+    }
+
+    void put(Key key, Value value) {
+        if (const auto found = index_.find(key); found != index_.end()) {
+            found-&gt;second-&gt;second = std::move(value);
+            entries_.splice(entries_.begin(), entries_, found-&gt;second);
+            return;
+        }
+
+        entries_.emplace_front(std::move(key), std::move(value));
+        index_[entries_.front().first] = entries_.begin();
+        if (entries_.size() &gt; capacity_) {
+            index_.erase(entries_.back().first);
+            entries_.pop_back();
+        }
+    }
+
+private:
+    using EntryList = std::list&lt;std::pair&lt;Key, Value&gt;&gt;;
+    std::size_t capacity_;
+    EntryList entries_;
+    std::unordered_map&lt;Key, typename EntryList::iterator&gt; index_;
+};
+</code></pre>
 <p><strong>Complexity:</strong> Average <code>O(1)</code> for <code>get</code> and <code>put</code>; <code>O(capacity)</code> space.</p>
 <p><strong>Clarify:</strong> Returning <code>None</code> cannot distinguish a missing key from a cached <code>None</code>; a sentinel or exception may be preferable.</p>
 <h3>Q9. Find a boundary with binary search.</h3>
 <p><strong>Problem:</strong> Return the first index for which a monotonic predicate is true, or <code>len(values)</code> if it is never true.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">from collections.abc import Callable, Sequence
 from typing import TypeVar
 
@@ -645,10 +977,30 @@ def first_true(values: Sequence[T], predicate: Callable[[T], bool]) -&gt; int:
 
     return left
 </code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;cstddef&gt;
+
+template &lt;typename Sequence, typename Predicate&gt;
+std::size_t firstTrue(const Sequence&amp; values, Predicate predicate) {
+    std::size_t left = 0;
+    std::size_t right = values.size();
+
+    while (left &lt; right) {
+        const std::size_t middle = left + (right - left) / 2;
+        if (predicate(values[middle])) {
+            right = middle;
+        } else {
+            left = middle + 1;
+        }
+    }
+    return left;
+}
+</code></pre>
 <p><strong>Complexity:</strong> <code>O(log n)</code> predicate evaluations and <code>O(1)</code> extra space.</p>
 <p><strong>Important invariant:</strong> All indices before <code>left</code> are known false, and all indices at or after <code>right</code> are known true.</p>
 <h3>Q10. Return a valid task order or report a dependency cycle.</h3>
 <p><strong>Approach:</strong> Use Kahn's topological-sort algorithm with indegrees.</p>
+<p><strong>Python</strong></p>
 <pre><code class="language-python">from collections import deque
 
 def task_order(task_count: int, dependencies: list[tuple[int, int]]) -&gt; list[int]:
@@ -672,6 +1024,55 @@ def task_order(task_count: int, dependencies: list[tuple[int, int]]) -&gt; list[
                 queue.append(neighbor)
 
     return order if len(order) == task_count else []
+</code></pre>
+<p><strong>C++</strong></p>
+<pre><code class="language-cpp">#include &lt;queue&gt;
+#include &lt;stdexcept&gt;
+#include &lt;utility&gt;
+#include &lt;vector&gt;
+
+std::vector&lt;int&gt; taskOrder(
+    int taskCount,
+    const std::vector&lt;std::pair&lt;int, int&gt;&gt;&amp; dependencies
+) {
+    if (taskCount &lt; 0) {
+        throw std::invalid_argument(&quot;task count must be non-negative&quot;);
+    }
+
+    std::vector&lt;std::vector&lt;int&gt;&gt; graph(taskCount);
+    std::vector&lt;int&gt; indegree(taskCount, 0);
+    for (const auto [prerequisite, dependent] : dependencies) {
+        if (prerequisite &lt; 0 || prerequisite &gt;= taskCount ||
+            dependent &lt; 0 || dependent &gt;= taskCount) {
+            throw std::out_of_range(&quot;dependency contains an invalid task&quot;);
+        }
+        graph[prerequisite].push_back(dependent);
+        ++indegree[dependent];
+    }
+
+    std::queue&lt;int&gt; queue;
+    for (int task = 0; task &lt; taskCount; ++task) {
+        if (indegree[task] == 0) {
+            queue.push(task);
+        }
+    }
+
+    std::vector&lt;int&gt; order;
+    while (!queue.empty()) {
+        const int node = queue.front();
+        queue.pop();
+        order.push_back(node);
+        for (const int neighbor : graph[node]) {
+            if (--indegree[neighbor] == 0) {
+                queue.push(neighbor);
+            }
+        }
+    }
+
+    return order.size() == static_cast&lt;std::size_t&gt;(taskCount)
+        ? order
+        : std::vector&lt;int&gt;{};
+}
 </code></pre>
 <p><strong>Complexity:</strong> <code>O(V + E)</code> time and space.</p>
 <h3>Q11. When should you use a stack, a queue, or a heap?</h3>
@@ -919,6 +1320,101 @@ def solution_b(values):
     document.querySelectorAll("h2, h3").forEach((heading) => {
       if (!heading.id) heading.id = slugify(heading.textContent);
     });
+
+    const codeTabGroups = [];
+    [...document.querySelectorAll("p > strong")].forEach((labelText) => {
+      if (labelText.textContent.trim() !== "Python") return;
+
+      const pythonLabel = labelText.parentElement;
+      const pythonPre = pythonLabel.nextElementSibling;
+      const cppLabel = pythonPre?.nextElementSibling;
+      const cppPre = cppLabel?.nextElementSibling;
+      if (
+        pythonPre?.tagName !== "PRE" ||
+        cppLabel?.tagName !== "P" ||
+        cppLabel.querySelector("strong")?.textContent.trim() !== "C++" ||
+        cppPre?.tagName !== "PRE"
+      ) return;
+
+      const groupIndex = codeTabGroups.length;
+      const group = document.createElement("div");
+      group.className = "code-tabs";
+
+      const tabList = document.createElement("div");
+      tabList.className = "code-tab-list";
+      tabList.setAttribute("role", "tablist");
+      tabList.setAttribute("aria-label", "Programming language");
+      group.append(tabList);
+
+      [
+        ["python", "Python", pythonPre],
+        ["cpp", "C++", cppPre],
+      ].forEach(([language, label, codeBlock]) => {
+        const tabId = `code-tab-${groupIndex}-${language}`;
+        const panelId = `code-panel-${groupIndex}-${language}`;
+        const button = document.createElement("button");
+        button.className = "code-tab-button";
+        button.type = "button";
+        button.id = tabId;
+        button.textContent = label;
+        button.dataset.language = language;
+        button.setAttribute("role", "tab");
+        button.setAttribute("aria-controls", panelId);
+        tabList.append(button);
+
+        const panel = document.createElement("div");
+        panel.className = "code-panel";
+        panel.id = panelId;
+        panel.dataset.language = language;
+        panel.setAttribute("role", "tabpanel");
+        panel.setAttribute("aria-labelledby", tabId);
+        panel.append(codeBlock);
+        group.append(panel);
+      });
+
+      pythonLabel.before(group);
+      pythonLabel.remove();
+      cppLabel.remove();
+      codeTabGroups.push(group);
+    });
+
+    const setCodeLanguage = (language, persist = true) => {
+      codeTabGroups.forEach((group) => {
+        group.querySelectorAll("[role=tab]").forEach((tab) => {
+          const selected = tab.dataset.language === language;
+          tab.setAttribute("aria-selected", String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+        });
+        group.querySelectorAll("[role=tabpanel]").forEach((panel) => {
+          panel.hidden = panel.dataset.language !== language;
+        });
+      });
+      if (persist) {
+        try { localStorage.setItem("preferred-code-language", language); } catch {}
+      }
+    };
+
+    codeTabGroups.forEach((group) => {
+      const tabs = [...group.querySelectorAll("[role=tab]")];
+      tabs.forEach((tab, index) => {
+        tab.addEventListener("click", () => setCodeLanguage(tab.dataset.language));
+        tab.addEventListener("keydown", (event) => {
+          let nextIndex = null;
+          if (event.key === "ArrowRight") nextIndex = (index + 1) % tabs.length;
+          if (event.key === "ArrowLeft") nextIndex = (index - 1 + tabs.length) % tabs.length;
+          if (event.key === "Home") nextIndex = 0;
+          if (event.key === "End") nextIndex = tabs.length - 1;
+          if (nextIndex === null) return;
+          event.preventDefault();
+          setCodeLanguage(tabs[nextIndex].dataset.language);
+          tabs[nextIndex].focus();
+        });
+      });
+    });
+
+    let preferredCodeLanguage = "python";
+    try { preferredCodeLanguage = localStorage.getItem("preferred-code-language") || "python"; } catch {}
+    setCodeLanguage(preferredCodeLanguage === "cpp" ? "cpp" : "python", false);
 
     document.querySelectorAll('a[href^="#"]').forEach((link) => {
       link.addEventListener("click", (event) => {
